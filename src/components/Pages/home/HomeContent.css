@@ -1,0 +1,74 @@
+video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+}
+
+.hero-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+  overflow: hidden; /* Ensures the pseudo-element doesn't overflow the container */
+}
+
+.hero-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("../../../images/denvertechcenter.jpg") center center/cover no-repeat;
+  /* filter: grayscale(100%); */
+  z-index: -1; /* Makes sure the background stays behind the content */
+}
+
+.hero-container > h1 {
+  color: #ffffff;
+  font-size: 6vw; /* Responsive font size based on viewport width */
+  margin-top: -5vh; /* Adjust margin responsively */
+  text-align: center;
+  position: relative; /* Ensure the h1 is positioned relative to allow pseudo-element */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 2vw 5vw; /* Responsive padding based on viewport width */
+  border-radius: 10px; /* Optional: rounded corners */
+  z-index: 1; /* Ensure it's above the background */
+}
+
+
+.hero-container > p {
+  margin-top: 8px;
+  color: #fff;
+  font-size: 32px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.hero-btns {
+  margin-top: 32px;
+}
+
+.hero-btns .btn {
+  margin: 6px;
+}
+
+.fa-play-circle {
+  margin-left: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-container > h1 {
+    /* font-size: 50px;
+    margin-top: -100px; */
+    font-size: 10vw; /* Further increase font size */
+    padding: 4vw 6vw; /* Add more padding for small screens */
+  }
+}

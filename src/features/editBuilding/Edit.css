@@ -1,0 +1,156 @@
+/* Container styling */
+.container2 {
+  width: 100%;
+  max-width: 90%;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* content within the main container */
+.inner-content{
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.input-values{
+  display: flex;
+  flex-direction: column;
+}
+
+.other-inputs{
+  display: flex;
+  flex-direction: row;
+}
+
+.address-input{
+  /* max-width: 9; */
+  padding: 0px 30px 0px 15px;
+}
+
+.title-update {
+  display: flex;
+  justify-content: center;
+  font-size: 300%;
+  margin: 10px 150px;
+  color: #45a049;
+  /* background-color: #272727;
+  border: 1px solid #272727;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+/* Form styling */
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.form-div {
+  margin-bottom: 15px;
+}
+
+/* column of the first 5 elements */
+.first-5{
+  display: flex;
+  flex-direction: column;
+  padding: 0px 15px;
+}
+
+/* column of the next 5 elements */
+.next-5 {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 30px 0px 15px;
+}
+
+/* current building img + upload bar and button */
+.img-upload-container{
+  display: flex;
+  flex-direction: column;
+  padding: 0px 30px 0px 15px;
+}
+
+/* current img section */
+.current-img-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* upload bar and button */
+.upload-container{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: auto;
+}
+
+/* Label styling */
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  color: #555;
+}
+
+/* Input styling */
+.input-update {
+  width: 300px;
+  padding: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  background-color: #fff;
+}
+
+.input:focus {
+  border-color: #45a049;
+  outline: none;
+}
+
+/* Button styling */
+.btn-upload {
+  padding: 10px 20px;
+  background-color: #45a049;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center; /* Center the button */
+}
+
+.btn2:hover {
+  background-color: #285e2b;
+}
+
+.add--update-button {
+  padding: 10px 0px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  .input {
+    font-size: 14px;
+  }
+
+  .btn {
+    width: 100%; /* Make the button full-width on small screens */
+    font-size: 14px;
+  }
+}
