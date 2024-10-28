@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./DisplayBldgInfo.css"
 import PropertyUploader from "./PropertyUploader"
@@ -38,6 +38,8 @@ const DisplayBldgInfo = () => {
   useEffect(() => {
     fetchBuildings(); // Initial fetch when component mounts
   }, []);
+
+  const navigate = useNavigate();
 
   // Deletes a building
   const handleDelete = (Id) => {
@@ -173,21 +175,23 @@ const DisplayBldgInfo = () => {
                 .map((building) => (
                   <tr
                     key={building._Id}
-                    onDoubleClick={() => handleDoubleClick(building.link)}
+                    // onDoubleClick={() => handleDoubleClick(building.link)}
+                    onDoubleClick={() => navigate(`/tenant/${building._id}`)}
                   >
                     <td
                       className="link"
-                      onDoubleClick={() => handleDoubleClick(building.link)}
+                      // onDoubleClick={() => handleDoubleClick(building.link)}
+                      onDoubleClick={() => navigate(`/tenant/${building._id}`)}
                     >
                       {building.address}
                     </td>
                     <td>{building.subMarket}</td>
-                    <td>{building.yoc}</td>
-                    <td>{building.currentOwner}</td>
-                    <td>{building.previousOwner}</td>
-                    <td>${building.leaseRate}/SF</td>
-                    <td>{building.vacancyRate}%</td>
-                    <td>${building.lsf}</td>
+                    <td>{building.yoc ? building.yoc : "UNK"}</td>
+                    <td>{building.currentOwner ? building.currentOwner : "N/A"}</td>
+                    <td>{building.previousOwner ? building.previousOwner : "N/A"}</td>
+                    <td>{building.leaseRate ? "$" + building.leaseRate + "/SF" : "UNK"}</td>
+                    <td>{building.vacancyRate ? building.vacancyRate + "%": "UNK"}</td>
+                    <td>{building.lsf ? "$" + building.lsf : "UNK"}</td>
                     <td>{building.on}</td>
                     <td>
                       <div className="btn-layout">

@@ -16,6 +16,7 @@ function Add() {
     currentOwner: "",
     previousOwner: "",
     leaseRate: "",
+    rsf: "",
     lsf: "",
     on: "",
     link: "",
@@ -145,6 +146,20 @@ function Add() {
                       value={values.previousOwner}
                       onChange={(e) =>
                         setValues({ ...values, previousOwner: e.target.value })
+                      }
+                    />
+                  </div>
+                  {/* 5 */}
+                  <div className="form-div">
+                    <label className="label">RSF:</label>
+                    <input
+                      className="input"
+                      type="text"
+                      name="previous"
+                      placeholder="Enter Building Size"
+                      value={values.rsf}
+                      onChange={(e) =>
+                        setValues({ ...values, rsf: e.target.value })
                       }
                     />
                   </div>

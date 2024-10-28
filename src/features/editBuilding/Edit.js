@@ -15,6 +15,7 @@ function Edit() {
     previousOwner: "",
     leaseRate: "",
     vacancyRate: "",
+    rsf: "",
     lsf: "",
     on: "",
   });
@@ -37,6 +38,7 @@ function Edit() {
           previousOwner: building.previousOwner || "",
           leaseRate: building.leaseRate || "",
           vacancyRate: building.vacancyRate || "",
+          rsf: building.rsf || "",
           lsf: building.lsf || "",
           on: building.on || "",
           link: building.link || "",
@@ -170,6 +172,19 @@ function Edit() {
                       value={values.previousOwner}
                       onChange={(e) =>
                         setValues({ ...values, previousOwner: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="form-div">
+                    <label className="label">RSF:</label>
+                    <input
+                      className="input"
+                      type="text"
+                      name="previous"
+                      placeholder="Enter Building Size"
+                      value={values.rsf}
+                      onChange={(e) =>
+                        setValues({ ...values, rsf: e.target.value })
                       }
                     />
                   </div>

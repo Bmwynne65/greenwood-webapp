@@ -53,9 +53,14 @@ td {
   text-align: left;
 }
 
-th {
-  background-color: #353535;
-  color: white;
+table thead th {
+  position: sticky;
+  top: 0; /* Stick to the top of the container */
+  z-index: 2; /* Ensure it stays above the rows */
+  background-color: #353535; /* Same background as the header */
+  color: white; /* Text color for header */
+  padding: 12px;
+  text-align: left;
 }
 
 td {

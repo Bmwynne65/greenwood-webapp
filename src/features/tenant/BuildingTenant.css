@@ -1,0 +1,143 @@
+/* Main Container */
+.tenant-main-container {
+    /* background-color: red; */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+  
+/* Building Container */
+.tenant-building-container {
+    padding: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.tenant-building-name {
+    font-size: 28px;
+    margin: 0;
+}
+
+/* Create Tenant Button */
+.create-tenant-container {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.create-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.create-button:hover {
+    background-color: #45a049;
+}
+
+/* table css */
+
+
+.tenant-container table {
+    max-width: 90%;
+    margin: 40px auto; /* Centers the table */
+}
+
+.tenant-container tr:hover {
+    /* cursor: pointer; */
+    background-color: #74df74;
+    color: #000000;
+}
+
+
+
+/* Editable Fields */
+.tenant-container input[type="text"],
+.tenant-container textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.tenant-container textarea {
+    min-height: 36px;
+    transform: translateY(1px);
+}
+
+.tenant-em-notes {
+    height: 60px;
+}
+
+/* Buttons for Editable Mode */
+.co-em-buttons {
+    display: flex;
+    gap: 20px;
+    /* justify-content: center; */
+}
+
+/* Buttons for View Mode */
+.co-vm-buttons {
+    display: flex;
+    gap: 20px;
+    /* justify-content: center; */
+}
+
+/* Action Buttons */
+.save-button,
+.cancel-button,
+.edit-button,
+.delete-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+}
+
+.cancel-button:hover {
+    background-color: #c82333;
+}
+
+.edit-button {
+    background-color: #ffc107;
+}
+
+.edit-button:hover {
+    background-color: #e0a800;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* Custom Icon */
+.custom-icon {
+    font-size: 18px;
+    vertical-align: middle;
+}

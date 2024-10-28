@@ -7,6 +7,7 @@ import Update from "./features/editBuilding/Update"
 import Edit from "./features/editBuilding/Edit"
 import Map from "./components/Pages/map/Map"
 import Add from "./features/add/Add"
+import Tenant from "./components/Pages/tenant/Tenant"
 import "./App.css"
 
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/edit/:id" exact element={<Edit />} />
             <Route path="/map" exact element={<Map />} />
             <Route path="/add" exact element={<Add />} />
+            <Route path="/tenant/:id" exact element={<Tenant />} />
           </Routes>
         </Router>
       </div>

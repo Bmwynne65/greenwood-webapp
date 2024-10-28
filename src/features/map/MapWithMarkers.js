@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import axios from "axios";
 import "./MapWithMarkers.css";
+import { TbBackground } from "react-icons/tb";
 
 const containerStyle = {
   width: "100%",
@@ -95,6 +96,30 @@ const MapWithMarkers = () => {
     window.open(link, "_blank"); // Open in a new tab
   };
 
+
+  //Google pins color based on SubMarket location
+  const getMarkerIcon = (submarket) => {
+    let iconUrl;
+    console.log("Sub-Market: ", submarket);
+    switch (submarket) {
+      case "DTC":
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+        break;
+      case "Centennial":
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+        break;
+      case "Submarket C":
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+        break;
+      default:
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"; // Fallback color
+    }
+    return {
+      url: iconUrl,
+      scaledSize: new window.google.maps.Size(32, 32), // Adjust size if needed
+    };
+  };
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -110,6 +135,7 @@ const MapWithMarkers = () => {
               position={location.position}
               title={location.address}
               onClick={() => handleMarkerClick(index)} // Handle Marker click
+              icon={getMarkerIcon(location.subMarket)}
             >
               {activeMarker === index && location.address && (
                 <InfoWindow
@@ -138,19 +164,19 @@ const MapWithMarkers = () => {
                               : "N/A"}
                           </p>
                           <p>
-                            <strong>Previous Owner:</strong>{" "}
-                            {location.previousOwner
-                              ? location.previousOwner
-                              : "N/A"}
-                          </p>
-                          <p>
                             <strong>Lease Rate:</strong>{" "}
-                            {location.leaseRate ? location.leaseRate : "N/A"}
+                            {location.leaseRate ? "$" + location.leaseRate + "/SF" : "N/A"}
                           </p>
                           <p>
                             <strong>Vacancy Rate:</strong>{" "}
                             {location.vacancyRate
                               ? location.vacancyRate + "%"
+                              : "N/A"}
+                          </p>
+                          <p>
+                            <strong>RSF:</strong>{" "}
+                            {location.rsf
+                              ? location.rsf + "/SF"
                               : "N/A"}
                           </p>
                           <p>

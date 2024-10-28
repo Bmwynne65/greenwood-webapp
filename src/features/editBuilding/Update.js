@@ -37,6 +37,7 @@ function Update() {
           previousOwner: building.previousOwner || "",
           leaseRate: building.leaseRate || "",
           vacancyRate: building.vacancyRate || "",
+          rsf: building.rsf || "",
           lsf: building.lsf || "",
           on: building.on || "",
           link: building.link || "",
