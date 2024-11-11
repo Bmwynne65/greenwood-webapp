@@ -9,6 +9,9 @@ const DisplayBldgInfo = () => {
   // const [filteredBuildings, setFilteredBuildings] = useState([]);
   const [subMarket, setSubMarket] = useState("");
   const [search, setSearch] = useState("");
+  const [sortedBuildings, setsortedBuildings] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc") // "asc" for ascending, "desc" for descending
+  const [sortColumn, setSortColumn] = useState(null) // Column currently being sorted
 
   //set markets to possible values
   // let markets = ["DTC", "Cenntenial", "Greenwood", "Inverness", "Meridian"];
@@ -72,9 +75,33 @@ const DisplayBldgInfo = () => {
     window.open(link, "_blank"); // Open in a new tab
   };
 
+  // Handle sorting
+  const handleSort = (column) => {
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc"
+
+    const sortedBuildings = [...buildings].sort((a, b) => {
+    const aValue = a[column]
+    const bValue = b[column]
+
+    // Check if the values are numbers; if so, compare numerically
+    if (!isNaN(aValue) && !isNaN(bValue)) {
+        return newSortOrder === "asc" ? aValue - bValue : bValue - aValue
+    }
+
+    // Otherwise, compare alphabetically
+    if (aValue < bValue) return newSortOrder === "asc" ? -1 : 1
+    if (aValue > bValue) return newSortOrder === "asc" ? 1 : -1
+    return 0;
+    })
+
+    setsortedBuildings(sortedBuildings)
+    setSortOrder(newSortOrder)
+    setSortColumn(column)
+  }
+
   return (
     <div className="container">
-      <h2>Manager</h2>
+      {/* <h2>Manager</h2> */}
       <PropertyUploader refreshBuildings={fetchBuildings} />
       <div className="table">
         <div className="filter-container">
@@ -121,6 +148,8 @@ const DisplayBldgInfo = () => {
                 onClick={() => {
                   setSubMarket("");
                   setSearch("");
+                  setSortColumn(null);
+                  setSortOrder("asc");
                 }}
               >
                 Clear
@@ -132,20 +161,32 @@ const DisplayBldgInfo = () => {
           <table>
             <thead>
               <tr>
-                <th>Address</th>
-                <th>Sub-Market</th>
-                <th>YOC</th>
+                <th onClick={() => handleSort("address")}>
+                  Address {sortColumn === "address" && (sortOrder === "asc" ? "↑" : "↓")}
+                </th>
+                <th onClick={() => handleSort("subMarket")}>
+                  Sub-Market {sortColumn === "subMarket" && (sortOrder === "asc" ? "↑" : "↓")}
+                </th>
+                <th onClick={() => handleSort("yoc")}>
+                  YOC {sortColumn === "yoc" && (sortOrder === "asc" ? "↑" : "↓")}
+                </th>
                 <th>Current Owner</th>
                 <th>Previous Owner</th>
-                <th>Lease Rate</th>
-                <th>Vacancy Rate</th>
-                <th>Last Sold For</th>
+                <th onClick={() => handleSort("leaseRate")}>
+                  Lease Rate {sortColumn === "leaseRate" && (sortOrder === "asc" ? "↑" : "↓")}
+                </th>
+                <th onClick={() => handleSort("vacancyRate")}>
+                  Vacancy Rate {sortColumn === "vacancyRate" && (sortOrder === "asc" ? "↑" : "↓")}
+                </th>
+                <th onClick={() => handleSort("lsf")}>
+                  Last Sold For {sortColumn === "lsf" && (sortOrder === "asc" ? "↑" : "↓")}
+                </th>
                 <th>On</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {buildings
+              {(sortColumn === null ? buildings : sortedBuildings)
                 .filter((building) => {
                   // If the search is not empty, check if the building address matches the search term
                   if (search.toLowerCase() !== "") {

@@ -1,0 +1,97 @@
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* background-color: #ddd; */
+  background: url("../../../images/denvertechcenter.jpg") center center/cover no-repeat;
+}
+
+.form-container {
+  background-color: #fff;
+  width: 450px;
+  padding: 2rem;
+  box-shadow: 0 1px 2px;
+  border-radius: 5px;
+}
+
+.form-container h2 {
+  font-size: 2.5rem;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.form-container p {
+  text-align: center;
+  cursor: pointer;
+}
+
+.form-container form {
+  margin: 2rem 0;
+}
+
+.form-control {
+  position: relative;
+}
+
+.form-control input {
+  width: 100%;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  font-size: 1.2rem;
+  padding: 0.75rem 2rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.form-control input:focus{
+  outline: none;
+  border: 2px solid #1c792b;
+}
+
+.form-control .icon {
+  position: absolute;
+  left: 05px;
+  top: 13px;
+  font-size: 1.5rem;
+}
+
+form button {
+  width: 100%;
+  background-color: #239c37;
+  outline: none;
+  border: none;
+  font-family: inherit;
+  color: #fff;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50px;
+  margin: 32px 0px 0px;
+}
+
+form button:active {
+  transform: scale(0.95);
+}
+
+form button:hover{
+  background-color: #176324;
+}
+
+
+.back-button{
+  font-size: 1.5rem;
+  padding: .5rem 0;
+  /* background-color: red; */
+  text-decoration: none;
+  color: #000000;
+}
+
+.back-button:hover{
+  text-decoration: underline;
+}
+
+.form-control .backarrow{
+  transform: translateY(3px);
+}

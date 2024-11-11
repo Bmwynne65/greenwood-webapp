@@ -11,6 +11,7 @@ function Edit() {
     id: id,
     address: "",
     yoc: "",
+    rnv: "",
     currentOwner: "",
     previousOwner: "",
     leaseRate: "",
@@ -34,6 +35,7 @@ function Edit() {
           address: building.address || "",
           subMarket: building.subMarket || "",
           yoc: building.yoc || "",
+          rnv: building.rnv || "",
           currentOwner: building.currentOwner || "",
           previousOwner: building.previousOwner || "",
           leaseRate: building.leaseRate || "",
@@ -206,6 +208,20 @@ function Edit() {
                   </div>
                   {/* 7 */}
                   <div className="form-div">
+                    <label className="label">RNV:</label>
+                    <input
+                      className="input"
+                      type="text"
+                      name="renovation"
+                      placeholder="Enter Renovation Year"
+                      value={values.rnv}
+                      onChange={(e) =>
+                        setValues({ ...values, rnv: e.target.value })
+                      }
+                    />
+                  </div>
+                  {/* 7 */}
+                  <div className="form-div">
                     <label className="label">Vacancy Rate:</label>
                     <input
                       className="input"
@@ -285,9 +301,6 @@ function Edit() {
                     name="image"
                     onChange={handleImageChange}
                   />
-                  <div className="add--update-button">
-                    <button className="btn-upload">Update</button>
-                  </div>
                 </div>
 
                 {/* Preview of the uploaded image */}
@@ -305,6 +318,9 @@ function Edit() {
               </div>
             </div>
           </div>
+          <div className="add--update-button">
+          <button className="btn-update">Update</button>
+        </div>
         </form>
       </div>
     </div>

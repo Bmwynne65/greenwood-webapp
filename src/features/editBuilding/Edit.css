@@ -1,5 +1,7 @@
 /* Container styling */
 .container2 {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 90%;
   margin: 50px auto;
@@ -7,6 +9,7 @@
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
 }
 
 /* content within the main container */
@@ -46,7 +49,7 @@
 /* Form styling */
 .form {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -85,7 +88,7 @@
 /* upload bar and button */
 .upload-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: auto;
 }
 
@@ -114,8 +117,16 @@
   outline: none;
 }
 
+.btn2:hover {
+  background-color: #285e2b;
+}
+
+.add--update-button {
+  padding: 10px 0px;
+}
+
 /* Button styling */
-.btn-upload {
+.btn-update {
   padding: 10px 20px;
   background-color: #45a049;
   color: white;
@@ -127,12 +138,8 @@
   align-self: center; /* Center the button */
 }
 
-.btn2:hover {
+.btn-update:hover {
   background-color: #285e2b;
-}
-
-.add--update-button {
-  padding: 10px 0px;
 }
 
 /* Responsive adjustments */

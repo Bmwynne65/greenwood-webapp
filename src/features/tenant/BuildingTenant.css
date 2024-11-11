@@ -25,10 +25,13 @@
 
 /* Create Tenant Button */
 .create-tenant-container {
+    /* position: sticky;
+    top: 200px; */
     text-align: right;
     margin-bottom: 20px;
 }
 
+/* Main button */
 .create-button {
     background-color: #4CAF50;
     color: white;
@@ -43,6 +46,26 @@
     background-color: #45a049;
 }
 
+/* Smaller floating button */
+.small-create-button {
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensures it stays on top */
+}
+
+.small-create-button:hover {
+    background-color: #45a049;
+}
+
 /* table css */
 
 
@@ -51,11 +74,33 @@
     margin: 40px auto; /* Centers the table */
 }
 
-.tenant-container tr:hover {
-    /* cursor: pointer; */
-    background-color: #74df74;
-    color: #000000;
+.tenant-container table thead th {
+    position: sticky;
+    top: 80px;
+    z-index: 2; /* Ensure it stays above the rows */
+    background-color: #353535; /* Same background as the header */
+    color: white; /* Text color for header */
+    padding: 12px;
+    text-align: left;
 }
+
+/* Specific styling for vacant rows to override nth-child */
+.tenant-container .vacant-row {
+    background-color: #32ac32 !important; /* Dark green */
+    color: #ffffff !important; /* White text for readability */
+    border-bottom: 1px solid white;
+}
+
+.tenant-container tr:nth-child(even) {
+    background-color: #e2e2e2;
+}
+
+.tenant-container tr:nth-child(n + 1):hover {
+    cursor: pointer;
+    background-color: #74df74;
+    color: #000000 !important;
+}
+
 
 
 

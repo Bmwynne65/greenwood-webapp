@@ -1,0 +1,121 @@
+.userinformation-table-container{
+    padding: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.userinformation-table-container table {
+    max-width: 90%;
+    margin: 40px auto; /* Centers the table */
+}
+
+.userinformation-table-container table thead th {
+    position: sticky;
+    top: 80px;
+    z-index: 2; /* Ensure it stays above the rows */
+    background-color: #353535; /* Same background as the header */
+    color: white; /* Text color for header */
+    padding: 12px;
+    text-align: left;
+}
+
+/* Specific styling for vacant rows to override nth-child */
+.userinformation-table-container .vacant-row {
+    background-color: #32ac32 !important; /* Dark green */
+    color: #ffffff !important; /* White text for readability */
+    border-bottom: 1px solid white;
+}
+
+.userinformation-table-container tr:nth-child(even) {
+    background-color: #e2e2e2;
+}
+
+.userinformation-table-container tr:nth-child(n + 1):hover {
+    cursor: pointer;
+    background-color: #74df74;
+    color: #000000 !important;
+}
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.2s;
+    border-radius: 34px;
+}
+
+/* Slider when checked */
+input:checked + .slider {
+    background-color: #4CAF50;
+}
+
+/* Slider thumb */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+/* Move thumb when checked */
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+
+/* Editable Fields */
+.userinformation-table-container input,
+.userinformation-table-container textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.userinformation-table-container textarea {
+    min-height: 36px;
+    transform: translateY(1px);
+}
+
+.tenant-em-notes {
+    height: 60px;
+}
+
+.checkboxes{
+    transform: translateY(20px);
+    margin: auto;
+    padding: auto;
+}

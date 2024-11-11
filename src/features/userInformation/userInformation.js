@@ -1,0 +1,251 @@
+import { useState, useEffect } from 'react'
+import { FaEdit, FaSave, FaTimes, FaTrash, FaPlus } from "react-icons/fa"
+import axios from 'axios'
+import "./UserInformation.css"
+
+function UserInformation() {
+    const [users, setUsers] = useState([]);
+    const [Password, setPassword] = useState("");
+    const [editingUserId, setEditingUserId] = useState(null);
+    const [editFormData, setEditFormData] = useState({
+        username: "",
+        password: "",
+        roles: [],
+    });
+
+    const rolesOptions = ["Admin", "Manager", "Employee"]; // Define possible roles
+
+
+    const fetchUsers = () => {
+        axios
+            .get(process.env.REACT_APP_URI + "/users")
+            .then((res) => {
+                setUsers(res.data);
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the user data!", error);
+            });
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const handleEditClick = (user) => {
+        setEditingUserId(user._id);
+        setEditFormData({
+            username: user.username,
+            password: "",
+            roles: Array.isArray(user.roles) ? user.roles : [], // Ensure roles is an array
+        });
+    };
+    
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+
+        setEditFormData({
+            ...editFormData,
+            [name]: value,
+        });
+    };
+
+    const handleRoleChange = (role) => {
+        setEditFormData((prevData) => {
+            // Create a new array to avoid direct mutation
+            const updatedRoles = [...prevData.roles];
+            
+            if (updatedRoles.includes(role)) {
+                // If role already exists, remove it
+                return {
+                    ...prevData,
+                    roles: updatedRoles.filter((r) => r !== role),
+                };
+            } else {
+                // If role does not exist, add it
+                return {
+                    ...prevData,
+                    roles: [...updatedRoles, role],
+                };
+            }
+        });
+    };
+    
+
+    const handleSaveClick = (userId) => {
+        const updatedUserData = {
+            ...editFormData,
+            roles: [...editFormData.roles], // Ensure roles is an array
+            active: users.find((user) => user._id === userId).active, // Keep current active status
+        };
+        console.log("Updated User Info: ", updatedUserData)
+        axios
+            .patch(`${process.env.REACT_APP_URI}/users/${userId}`, updatedUserData)
+            .then(() => {
+                setUsers(users.map(user => user._id === userId ? { ...user, ...updatedUserData } : user));
+                setEditingUserId(null); // Exit edit mode
+            })
+            .catch((error) => {
+                console.error("Error saving user data", error);
+            });
+    };
+    
+
+    const handleToggleActive = (userId) => {
+        const updatedUser = users.find(user => user._id === userId);
+        const newStatus = !updatedUser.active;
+
+        const updatedUserData = {
+            ...updatedUser,
+            active: newStatus,
+        };
+
+        axios
+            .patch(`${process.env.REACT_APP_URI}/users/${userId}`, updatedUserData)
+            .then(() => {
+                setUsers(users.map(user =>
+                    user._id === userId ? { ...user, active: newStatus } : user
+                ));
+            })
+            .catch((error) => {
+                console.error("Error updating user status", error);
+            });
+    };
+
+    const handleDelete = (userId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    
+        if (confirmDelete) {
+          axios
+            .delete(process.env.REACT_APP_URI + "/users/" + userId)
+            .then((res) => {
+              console.log("user deleted successfully:", res.data)
+              // Update the state to remove the deleted tenant
+              setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId))
+            })
+            .catch((error) => {
+              console.error("There was an error deleting the user!", error)
+            });
+        }
+    };
+
+    const handleCancel = () => {
+        setEditingUserId(null) // Exit edit mode
+        setEditFormData({}) // Reset edited tenant data
+      };
+
+    return (
+        <>
+            {/* <div>userInformation</div> */}
+            <div className="userinformation-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Password</th>
+                            <th>Roles</th>
+                            <th>Active</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => (
+                            <tr key={user._id}>
+                                <td>
+                                    {editingUserId === user._id ? (
+                                        <input
+                                            type="text"
+                                            name="username"
+                                            value={editFormData.username}
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        user.username
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === user._id ? (
+                                        <input
+                                            type="text"
+                                            name="password"
+                                            // value={editFormData.password}
+                                            value={editFormData.password}
+                                            autoComplete='off'
+                                            placeholder='Enter a Password or Re-enter Password'
+                                            onChange={handleInputChange}
+                                        />
+                                    ) : (
+                                        "•".repeat(18) // Display black dots when not in edit mode
+                                    )}
+                                </td>
+                                <td>
+                                    {editingUserId === user._id ? (
+                                        rolesOptions.map((role) => (
+                                            <label key={role}>
+                                                <input
+                                                    className='checkboxes'
+                                                    type="checkbox"
+                                                    checked={editFormData.roles.includes(role)}
+                                                    onChange={() => handleRoleChange(role)}
+                                                />
+                                                {role}
+                                            </label>
+                                        ))
+                                    ) : (
+                                        user.roles.join(", ")
+                                    )}
+                                </td>
+                                <td>
+                                    <label className="switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={user.active}
+                                            onChange={() => handleToggleActive(user._id)}
+                                        />
+                                        <span className="slider"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <div className="co-vm-buttons">
+                                        {editingUserId === user._id ? (
+                                            <button
+                                                className="save-button"
+                                                onClick={() => handleSaveClick(user._id)}
+                                            >
+                                                <FaSave />
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className="edit-button"
+                                                onClick={() => handleEditClick(user)}
+                                            >
+                                                <FaEdit />
+                                            </button>
+                                        )}
+                                        {editingUserId === user._id ? (
+                                            <button
+                                            className="delete-button"
+                                            onClick={() => handleCancel()}
+                                        >
+                                            <FaTrash />
+                                        </button>
+                                        ) : (
+                                            <button
+                                            className="delete-button"
+                                            onClick={() => handleDelete(user._id)}
+                                        >
+                                            <FaTrash />
+                                        </button>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </>
+    );
+}
+
+export default UserInformation;

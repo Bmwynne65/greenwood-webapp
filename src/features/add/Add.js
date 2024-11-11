@@ -13,6 +13,7 @@ function Add() {
     address: "",
     subMarket: "",
     yoc: "",
+    rnv: "",
     currentOwner: "",
     previousOwner: "",
     leaseRate: "",
@@ -179,6 +180,20 @@ function Add() {
                       }
                     />
                   </div>
+                  {/* 6 */}
+                  <div className="form-div">
+                    <label className="label">RNV:</label>
+                    <input
+                      className="input"
+                      type="text"
+                      name="rnv"
+                      placeholder="Enter Renovation Year"
+                      value={values.rnv}
+                      onChange={(e) =>
+                        setValues({ ...values, rnv: e.target.value })
+                      }
+                    />
+                  </div>
                   {/* 7 */}
                   <div className="form-div">
                     <label className="label">Vacancy Rate:</label>
@@ -217,38 +232,11 @@ function Add() {
                       onChange={(e) => setValues({ ...values, on: e.target.value })}
                     />
                   </div>
-                  {/* 10 */}
-                  {/* <div className="form-div">
-                    <label className="label">link:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="link"
-                      placeholder="Enter Date Purchased"
-                      value={values.link}
-                      onChange={(e) => setValues({ ...values, link: e.target.value })}
-                    />
-                  </div> */}
                 </div>
               </div>
             </div>
 
             <div className="img-upload-container">
-              {/* Display the current image if it exists */}
-              {/* <div className="current-img-container">
-                <label className="label">Current Image:</label>
-                {values.img ? (
-                  <figure className="fig">
-                    <img
-                      src={values.img} // Reference the imageBlob containing base64 string
-                      alt={"Picture of " + values.address}
-                      style={{ width: "auto", height: "295px" }} // Optional styling for image size
-                    />
-                  </figure>
-                ) : (
-                  <p>No image available</p>
-                )}
-              </div> */}
               <div className="upload-container-add">
                 {/* Image uploader */}
                 <div className="form-div">
@@ -277,7 +265,7 @@ function Add() {
               </div>
             </div>
           </div>
-          <button className="btn-upload">Add</button>
+          <button className="add--add-btn">Add</button>
         </form>
       </div>
     </div>
