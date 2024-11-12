@@ -13,16 +13,6 @@ const DisplayBldgInfo = () => {
   const [sortOrder, setSortOrder] = useState("asc") // "asc" for ascending, "desc" for descending
   const [sortColumn, setSortColumn] = useState(null) // Column currently being sorted
 
-  //set markets to possible values
-  // let markets = ["DTC", "Cenntenial", "Greenwood", "Inverness", "Meridian"];
-
-  // Test
-  // console.log(subMarket);
-
-  // const [filters, setFilters] = useState({
-  //   subMarket: "",
-  //   vacancyRate: "",
-  // });
   // Fetch data from the API
   const fetchBuildings = () => {
     axios
@@ -101,58 +91,67 @@ const DisplayBldgInfo = () => {
 
   return (
     <div className="container">
-      {/* <h2>Manager</h2> */}
+      <h2>Building Manager</h2>
       {/* <PropertyUploader refreshBuildings={fetchBuildings} /> */}
       <div className="table">
         <div className="filter-container">
-          <div className="button-nav-container">
-            {/* <button className="btn-add">
-            <Link className="link-dec" to={`/add`}>
-              Add +
-            </Link>
-          </button> */}
-          </div>
+          {/* <div className="button-nav-container">
+            <button className="btn-add">
+              <Link className="link-dec" to={`/add`}>
+                Add +
+              </Link>
+            </button>
+          </div> */}
           <div className="search-container">
-            <input
-              className="search-input"
-              type="text"
-              placeholder="Search by address..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <div class="dropdown">
-              <button class="dropbtn">Sub-markets</button>
-              <div class="dropdown-content">
+            <div className="left-side-btns">
+              <input
+                className="search-input"
+                type="text"
+                placeholder="Search by address..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <div class="dropdown">
+                <button class="dropbtn">Sub-markets</button>
+                <div class="dropdown-content">
+                  <button
+                    className="subMarket-filter-btn"
+                    value="DTC"
+                    onClick={(e) => setSubMarket(e.target.value)}
+                  >
+                    {" "}
+                    DTC{" "}
+                  </button>
+                  <button
+                    className="subMarket-filter-btn"
+                    value="Centennial"
+                    onClick={(e) => setSubMarket(e.target.value)}
+                  >
+                    {" "}
+                    Centennial{" "}
+                  </button>
+                </div>
+              </div>
+              <div class="cleardropdown">
                 <button
-                  className="subMarket-filter-btn"
-                  value="DTC"
-                  onClick={(e) => setSubMarket(e.target.value)}
+                  class="clearbtn"
+                  value=""
+                  onClick={() => {
+                    setSubMarket("");
+                    setSearch("");
+                    setSortColumn(null);
+                    setSortOrder("asc");
+                  }}
                 >
-                  {" "}
-                  DTC{" "}
-                </button>
-                <button
-                  className="subMarket-filter-btn"
-                  value="Centennial"
-                  onClick={(e) => setSubMarket(e.target.value)}
-                >
-                  {" "}
-                  Centennial{" "}
+                  Clear
                 </button>
               </div>
             </div>
-            <div class="cleardropdown">
-              <button
-                class="clearbtn"
-                value=""
-                onClick={() => {
-                  setSubMarket("");
-                  setSearch("");
-                  setSortColumn(null);
-                  setSortOrder("asc");
-                }}
-              >
-                Clear
+            <div className="button-nav-container">
+              <button className="btn-add">
+                <Link className="link-dec" to={`/add`}>
+                  Add +
+                </Link>
               </button>
             </div>
           </div>
@@ -227,12 +226,24 @@ const DisplayBldgInfo = () => {
                       {building.address}
                     </td>
                     <td>{building.subMarket}</td>
-                    <td>{building.yoc ? building.yoc : "UNK"}</td>
-                    <td>{building.currentOwner ? building.currentOwner : "N/A"}</td>
-                    <td>{building.previousOwner ? building.previousOwner : "N/A"}</td>
-                    <td>{building.leaseRate ? "$" + building.leaseRate + "/SF" : "UNK"}</td>
-                    <td>{building.vacancyRate ? building.vacancyRate + "%": "UNK"}</td>
-                    <td>{building.lsf ? "$" + building.lsf : "UNK"}</td>
+                    <td className={building.yoc ? "" : "text-red"}>
+                      {building.yoc ? building.yoc : "UNK"}
+                    </td>
+                    <td>
+                      {building.currentOwner ? building.currentOwner : "N/A"}
+                    </td>
+                    <td className={building.previousOwner ? "" : "text-red"}>
+                      {building.previousOwner ? building.previousOwner : "N/A"}
+                    </td>
+                    <td className={building.leaseRate ? "" : "text-red"}>
+                      {building.leaseRate ? "$" + building.leaseRate + "/SF" : "UNK"}
+                    </td>
+                    <td className={building.vacancyRate ? "" : "text-red"}>
+                      {building.vacancyRate ? building.vacancyRate + "%": "UNK"}
+                    </td>
+                    <td className={building.lsf ? "" : "text-red"}>
+                      {building.lsf ? "$" + building.lsf : "UNK"}
+                    </td>
                     <td>{building.on}</td>
                     <td>
                       <div className="btn-layout">

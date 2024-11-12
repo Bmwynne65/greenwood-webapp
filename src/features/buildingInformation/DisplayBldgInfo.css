@@ -30,6 +30,7 @@
 h2 {
   color: #333;
   margin-bottom: 20px;
+  font-size: 42px;
   text-align: center;
 }
 
@@ -140,30 +141,40 @@ td {
   color: white;
 }
 
+.button-nav-container {
+  /* background-color: red; */
+  padding: 0px 8px;
+  /* Removed incorrect properties */
+}
+
 .btn-add {
-  background-color: blue;
-  margin-right: 8px;
-  width: 75px;
-  height: 40px;
+  background-color: #1b44b6;
+  color: white;
+  padding: 16px 12px;
+  font-size: 16px;
+  border: none;
 }
 
 .btn-add:hover {
   background-color: #140e70;
 }
 
-.button-nav-container {
-  display: flex;
-  flex-direction: row;
+.left-side-btns {
+  display: flex; /* Aligns search, dropdown, and clear button in a row */
+  gap: 10px; /* Adds space between the left-side elements */
+  align-items: center;
 }
 
 .search-container {
+  /* background-color: rgb(187, 0, 171); */
   display: flex;
-  justify-content: left;
+  justify-content: space-between; /* Separates left and right sections */
   padding: 10px 0px;
 }
 
 .search-input {
-  width: 25%;
+  min-height: 50px;
+  width: 75%;
   padding: 8px;
   border: 1px solid #000000;
   border-radius: 4px;
@@ -182,17 +193,15 @@ td {
 .dropbtn {
   background-color: #04aa6d;
   color: white;
-  padding: 16px 12px;
+  padding:  6px;
   font-size: 16px;
   border: none;
+  max-width: 200px;
 }
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
-  display: inline-block;
-  padding: 0px 12px;
-
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -203,8 +212,6 @@ td {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  max-height: 200px; /* Set a reasonable max height */
-  overflow-y: auto;  /* Enable vertical scrolling if needed */
 }
 
 
@@ -272,4 +279,9 @@ td {
 
 .clearbtn:active {
   scale: 0.95;
+}
+
+
+.text-red {
+  color: red;
 }

@@ -47,7 +47,7 @@ function Navbar() {
 
   // window.addEventListener("resize", showButton);
 
-  console.log("user active: ", isManager)
+  // console.log("user active: ", isManager)
   return (
     <>
       <nav className="navbar">

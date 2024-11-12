@@ -100,7 +100,7 @@ const MapWithMarkers = () => {
   //Google pins color based on SubMarket location
   const getMarkerIcon = (submarket) => {
     let iconUrl;
-    console.log("Sub-Market: ", submarket);
+    // console.log("Sub-Market: ", submarket);
     switch (submarket) {
       case "DTC":
         iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
