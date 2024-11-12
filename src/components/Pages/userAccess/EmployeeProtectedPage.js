@@ -8,7 +8,7 @@ function EmployeeProtectedPage({ children, redirectTo = '/unauthorized' }) {
   const hasEmployeeRole = useHasRole('Employee')
   const isActive = useIsActive();
 
-  // console.log("EmployeeProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
+  console.log("EmployeeProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
   // console.log("EmployeeProtectedPage - User roles:", roles); // Should include 'employee'
 
   if (isAuthenticated && hasEmployeeRole && isActive) {

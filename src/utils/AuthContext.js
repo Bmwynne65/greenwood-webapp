@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       });
       setIsAuthenticated(true);
       localStorage.setItem('isAuthenticated', 'true');
-      // console.log("Is Authenticated?:", isAuthenticated)
+      console.log("Is Authenticated?:", isAuthenticated)
       setUserRoles(response.data.roles || []);
       setIsActive(response.data.active || false);
     } catch (error) {

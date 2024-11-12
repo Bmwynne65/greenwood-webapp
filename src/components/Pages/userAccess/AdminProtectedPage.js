@@ -9,7 +9,7 @@ function AdminProtectedPage({ children, redirectTo = '/unauthorized' }) {
   const hasManagerRole = useHasRole('Manager')
   const isActive = useIsActive();
 
-  // console.log("AdminProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
+  console.log("AdminProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
   // console.log("AdminProtectedPage - User roles:", roles); // Should include 'admin'
 
   if (isAuthenticated && (hasAdminRole || (hasManagerRole && isActive)) && isActive) {
