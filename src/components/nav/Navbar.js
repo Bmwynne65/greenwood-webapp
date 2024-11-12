@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext  } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "../../features/button/Button";
-import { hasRole, isActive } from "../../utils/auth";
+import { useHasRole,useIsActive } from "../../utils/auth";
 import "./Navbar.css";
+import { AuthContext } from "../../utils/AuthContext";
 
 import logo from '../../images/GCRE+Logo.png'
 
@@ -10,13 +11,14 @@ function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
 
 
   // Check roles and active status
-  const isAdmin = hasRole('Admin')
-  const isManager = hasRole('Manager') && isActive()
-  const isEmployee = hasRole('Employee')
-  const active = isActive()
+  const active = useIsActive()
+  const isAdmin = useHasRole('Admin')
+  const isManager = useHasRole('Manager') && active
+  const isEmployee = useHasRole('Employee')
 
   // Handle menu click toggles
   const handleClick = () => setClick(!click);
@@ -37,11 +39,10 @@ function Navbar() {
     return () => window.addEventListener("resize", showButton);
   }, []);
 
-  // Sign-out handler
-  const handleSignOut = () => {
-    document.cookie = 'authToken=; Max-Age=0; path=/;'; // Clear the authToken cookie
+  // Updated sign-out handler to use context logout
+  const handleSignOut = async () => {
+    await logout(); // Use AuthContext's logout function to clear auth state
     navigate('/sign-in'); // Redirect to the sign-in page
-    window.location.reload(); // Reload to reset state
   };
 
   // window.addEventListener("resize", showButton);

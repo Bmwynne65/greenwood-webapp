@@ -35,7 +35,7 @@ const DisplayBldgInfo = () => {
       })
       .catch((error) => {
         console.error("There was an error fetching the data!", error);
-      });
+      }, { withCredentials: true });
   };
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const DisplayBldgInfo = () => {
         })
         .catch((error) => {
           console.error("There was an error deleting the building!", error);
-        });
+        }, { withCredentials: true });
     }
   };
 
@@ -102,7 +102,7 @@ const DisplayBldgInfo = () => {
   return (
     <div className="container">
       {/* <h2>Manager</h2> */}
-      <PropertyUploader refreshBuildings={fetchBuildings} />
+      {/* <PropertyUploader refreshBuildings={fetchBuildings} /> */}
       <div className="table">
         <div className="filter-container">
           <div className="button-nav-container">

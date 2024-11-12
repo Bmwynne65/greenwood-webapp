@@ -71,7 +71,7 @@ function Update() {
       })
       .catch((error) => {
         console.error("There was an error updating the data!", error);
-      });
+      }, { withCredentials: true });
   };
   
 

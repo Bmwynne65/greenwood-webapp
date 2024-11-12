@@ -47,7 +47,7 @@ function Add() {
         } else {
           console.error("There was an error adding the data!", error);
         }
-      });
+      }, { withCredentials: true });
   };
 
   const handleImageChange = (e) => {

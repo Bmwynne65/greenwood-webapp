@@ -28,7 +28,6 @@ function SignUp({ FormHandle }) {
 
       console.log("Login response:", response);
 
-
       if (response.status === 200) {
         alert("Login Successful!");
         

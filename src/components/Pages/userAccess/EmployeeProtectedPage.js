@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../../utils/AuthContext';
-import { getUserRoles } from '../../../utils/auth';
+import { useHasRole, useIsActive } from '../../../utils/auth';
 
 function EmployeeProtectedPage({ children }) {
   const { isAuthenticated } = useContext(AuthContext);
-  const roles = getUserRoles();
+  const hasEmployeeRole = useHasRole('Employee')
+  const isActive = useIsActive();
 
   console.log("EmployeeProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
-  console.log("EmployeeProtectedPage - User roles:", roles); // Should include 'employee'
+  // console.log("EmployeeProtectedPage - User roles:", roles); // Should include 'employee'
 
-  if (isAuthenticated && roles && roles.includes('Employee')) {
+  if (isAuthenticated && hasEmployeeRole && isActive) {
     return children;
   }
 

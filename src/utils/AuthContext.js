@@ -4,37 +4,45 @@ import axios from 'axios';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Initialize isAuthenticated based on localStorage
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    () => JSON.parse(localStorage.getItem('isAuthenticated')) || false
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRoles, setUserRoles] = useState([]);
+  const [isActive, setIsActive] = useState(false);
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get(process.env.REACT_APP_URI + '/auth/status', { withCredentials: true });
-      console.log("Auth status response:", response.data); // Log the response
+      const response = await axios.get(`${process.env.REACT_APP_URI}/auth/status`, {
+        withCredentials: true
+      });
+      
       setIsAuthenticated(true);
-      localStorage.setItem('isAuthenticated', 'true'); // Persist state in localStorage
+      setUserRoles(response.data.roles || []);
+      setIsActive(response.data.active || false);
     } catch (error) {
       console.error("Auth status check failed", error);
       setIsAuthenticated(false);
-      localStorage.setItem('isAuthenticated', 'false'); // Persist state in localStorage
+      setUserRoles([]);
+      setIsActive(false);
     }
   };
 
   useEffect(() => {
-    checkAuthStatus(); // Check authentication status on app load or refresh
-    console.log("Auth Status:", isAuthenticated);
+    checkAuthStatus();
   }, []);
 
   const logout = async () => {
-    await axios.post(process.env.REACT_APP_URI + '/auth/logout', {}, { withCredentials: true });
-    setIsAuthenticated(false);
-    localStorage.setItem('isAuthenticated', 'false'); // Clear localStorage on logout
+    try {
+      await axios.post(`${process.env.REACT_APP_URI}/auth/logout`, {}, { withCredentials: true });
+      document.cookie = 'authToken=; Max-Age=0; path=/;'; // Clear the authToken cookie on client side
+      setIsAuthenticated(false);
+      setUserRoles([]);
+      setIsActive(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, checkAuthStatus, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, userRoles, isActive, checkAuthStatus, logout }}>
       {children}
     </AuthContext.Provider>
   );
