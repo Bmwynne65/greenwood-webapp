@@ -10,7 +10,7 @@ import Update from "./features/editBuilding/Update"
 import Edit from "./features/editBuilding/Edit"
 import Map from "./components/Pages/map/Map"
 import Add from "./features/add/Add"
-import Tenant from "./components/Pages/tenant/tenant"
+import Tenant from "./components/Pages/tenantPage/Tenant"
 import SignIn from "./components/Pages/sign-in/Signup"
 import UserManagement from "./components/Pages/userManagement/userManagement"
 
@@ -63,7 +63,10 @@ function App() {
               <Route path="/manager" element={<Manager />} />
               <Route path="/map" exact element={<Map />} />
               <Route path="/user-management" exact element={<UserManagement />} />
-              <Route path="/unauthorized" element={<SignIn />} /> 
+              <Route path="/unauthorized" element={<SignIn />} />
+              <Route path="/add" exact element={<Add />} /> 
+              <Route path="/tenant/:id" exact element={<Tenant />} />
+              <Route path="/edit/:id" exact element={<Edit />} />
             </Routes>
           </Router>
         </AuthProvider>

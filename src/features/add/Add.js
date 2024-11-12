@@ -4,6 +4,7 @@ import "./Add.css";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/nav/Navbar";
+import EmployeeProtectedPage from "../../components/Pages/userAccess/EmployeeProtectedPage";
 
 function Add() {
   const [imageBuffer, setImageBuffer] = useState(null); // To store the binary of the uploaded image
@@ -71,204 +72,206 @@ function Add() {
 
   return (
     <>
-      <div>
-      <Navbar />
-      <div className="container2">
-        <h2 className="title-update">Add</h2>
-        <form className="form-add" onSubmit={handleSubmit}>
-          <div className="inner-content">
-            <div className="input-values">
-              <div className="address-input">
-                {/* 1 */}
-                <div className="form-div">
-                  <label className="label">Address:</label>
-                  <input
-                    className="input"
-                    type="text"
-                    name="address"
-                    placeholder="Enter Address"
-                    value={values.address}
-                    onChange={(e) =>
-                      setValues({ ...values, address: e.target.value })
-                    }
-                  />
+      <EmployeeProtectedPage>
+        <div>
+        <Navbar />
+        <div className="container2">
+          <h2 className="title-update">Add</h2>
+          <form className="form-add" onSubmit={handleSubmit}>
+            <div className="inner-content">
+              <div className="input-values">
+                <div className="address-input">
+                  {/* 1 */}
+                  <div className="form-div">
+                    <label className="label">Address:</label>
+                    <input
+                      className="input"
+                      type="text"
+                      name="address"
+                      placeholder="Enter Address"
+                      value={values.address}
+                      onChange={(e) =>
+                        setValues({ ...values, address: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="other-inputs">
+                  <div className="first-5">
+                    {/* 2 */}
+                    <div className="form-div">
+                      <label className="label">Sub Market:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="subMarket"
+                        placeholder="Enter Sub Market"
+                        value={values.subMarket}
+                        onChange={(e) =>
+                          setValues({ ...values, subMarket: e.target.value })
+                        }
+                      />
+                    </div>
+                    {/* 3 */}
+                    <div className="form-div">
+                      <label className="label">YOC:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="yoc"
+                        placeholder="Enter Year of Completion"
+                        value={values.yoc}
+                        onChange={(e) => setValues({ ...values, yoc: e.target.value })}
+                      />
+                    </div>
+                    {/* 4 */}
+                    <div className="form-div">
+                      <label className="label">Current Owner:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="current"
+                        placeholder="Enter Current Owner"
+                        value={values.currentOwner}
+                        onChange={(e) =>
+                          setValues({ ...values, currentOwner: e.target.value })
+                        }
+                      />
+                    </div>
+                    {/* 5 */}
+                    <div className="form-div">
+                      <label className="label">Previous Owner:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="previous"
+                        placeholder="Enter Previous Owner"
+                        value={values.previousOwner}
+                        onChange={(e) =>
+                          setValues({ ...values, previousOwner: e.target.value })
+                        }
+                      />
+                    </div>
+                    {/* 5 */}
+                    <div className="form-div">
+                      <label className="label">RSF:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="previous"
+                        placeholder="Enter Building Size"
+                        value={values.rsf}
+                        onChange={(e) =>
+                          setValues({ ...values, rsf: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="next-5">
+                    {/* 6 */}
+                    <div className="form-div">
+                      <label className="label">Lease Rate:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="lease"
+                        placeholder="Enter Lease Rate"
+                        value={values.leaseRate}
+                        onChange={(e) =>
+                          setValues({ ...values, leaseRate: e.target.value })
+                        }
+                      />
+                    </div>
+                    {/* 6 */}
+                    <div className="form-div">
+                      <label className="label">RNV:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="rnv"
+                        placeholder="Enter Renovation Year"
+                        value={values.rnv}
+                        onChange={(e) =>
+                          setValues({ ...values, rnv: e.target.value })
+                        }
+                      />
+                    </div>
+                    {/* 7 */}
+                    <div className="form-div">
+                      <label className="label">Vacancy Rate:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="vacancy"
+                        placeholder="Enter Vacancy Rate"
+                        value={values.vacancyRate}
+                        onChange={(e) =>
+                          setValues({ ...values, vacancyRate: e.target.value })
+                        }
+                      />
+                    </div>
+                    {/* 8 */}
+                    <div className="form-div">
+                      <label className="label">Last Sold For:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="lsf"
+                        placeholder="Enter Last Sold For Price"
+                        value={values.lsf}
+                        onChange={(e) => setValues({ ...values, lsf: e.target.value })}
+                      />
+                    </div>
+                    {/* 9 */}
+                    <div className="form-div">
+                      <label className="label">On:</label>
+                      <input
+                        className="input"
+                        type="text"
+                        name="on"
+                        placeholder="Enter Date Purchased"
+                        value={values.on}
+                        onChange={(e) => setValues({ ...values, on: e.target.value })}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="other-inputs">
-                <div className="first-5">
-                  {/* 2 */}
+
+              <div className="img-upload-container">
+                <div className="upload-container-add">
+                  {/* Image uploader */}
                   <div className="form-div">
-                    <label className="label">Sub Market:</label>
+                    <label className="label">Upload New Image:</label>
                     <input
-                      className="input"
-                      type="text"
-                      name="subMarket"
-                      placeholder="Enter Sub Market"
-                      value={values.subMarket}
-                      onChange={(e) =>
-                        setValues({ ...values, subMarket: e.target.value })
-                      }
+                      className="input-update"
+                      type="file"
+                      accept="image/*"
+                      name="image"
+                      onChange={handleImageChange}
                     />
                   </div>
-                  {/* 3 */}
-                  <div className="form-div">
-                    <label className="label">YOC:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="yoc"
-                      placeholder="Enter Year of Completion"
-                      value={values.yoc}
-                      onChange={(e) => setValues({ ...values, yoc: e.target.value })}
-                    />
-                  </div>
-                  {/* 4 */}
-                  <div className="form-div">
-                    <label className="label">Current Owner:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="current"
-                      placeholder="Enter Current Owner"
-                      value={values.currentOwner}
-                      onChange={(e) =>
-                        setValues({ ...values, currentOwner: e.target.value })
-                      }
-                    />
-                  </div>
-                  {/* 5 */}
-                  <div className="form-div">
-                    <label className="label">Previous Owner:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="previous"
-                      placeholder="Enter Previous Owner"
-                      value={values.previousOwner}
-                      onChange={(e) =>
-                        setValues({ ...values, previousOwner: e.target.value })
-                      }
-                    />
-                  </div>
-                  {/* 5 */}
-                  <div className="form-div">
-                    <label className="label">RSF:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="previous"
-                      placeholder="Enter Building Size"
-                      value={values.rsf}
-                      onChange={(e) =>
-                        setValues({ ...values, rsf: e.target.value })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="next-5">
-                  {/* 6 */}
-                  <div className="form-div">
-                    <label className="label">Lease Rate:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="lease"
-                      placeholder="Enter Lease Rate"
-                      value={values.leaseRate}
-                      onChange={(e) =>
-                        setValues({ ...values, leaseRate: e.target.value })
-                      }
-                    />
-                  </div>
-                  {/* 6 */}
-                  <div className="form-div">
-                    <label className="label">RNV:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="rnv"
-                      placeholder="Enter Renovation Year"
-                      value={values.rnv}
-                      onChange={(e) =>
-                        setValues({ ...values, rnv: e.target.value })
-                      }
-                    />
-                  </div>
-                  {/* 7 */}
-                  <div className="form-div">
-                    <label className="label">Vacancy Rate:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="vacancy"
-                      placeholder="Enter Vacancy Rate"
-                      value={values.vacancyRate}
-                      onChange={(e) =>
-                        setValues({ ...values, vacancyRate: e.target.value })
-                      }
-                    />
-                  </div>
-                  {/* 8 */}
-                  <div className="form-div">
-                    <label className="label">Last Sold For:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="lsf"
-                      placeholder="Enter Last Sold For Price"
-                      value={values.lsf}
-                      onChange={(e) => setValues({ ...values, lsf: e.target.value })}
-                    />
-                  </div>
-                  {/* 9 */}
-                  <div className="form-div">
-                    <label className="label">On:</label>
-                    <input
-                      className="input"
-                      type="text"
-                      name="on"
-                      placeholder="Enter Date Purchased"
-                      value={values.on}
-                      onChange={(e) => setValues({ ...values, on: e.target.value })}
-                    />
-                  </div>
+
+                  {/* Preview of the uploaded image */}
+                  {imagePreview && (
+                    <div className="form-div">
+                      <label className="label">Image Preview:</label>
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        style={{ width: "300px", height: "auto" }}
+                      />
+                    </div>
+                  )}
+
                 </div>
               </div>
             </div>
-
-            <div className="img-upload-container">
-              <div className="upload-container-add">
-                {/* Image uploader */}
-                <div className="form-div">
-                  <label className="label">Upload New Image:</label>
-                  <input
-                    className="input-update"
-                    type="file"
-                    accept="image/*"
-                    name="image"
-                    onChange={handleImageChange}
-                  />
-                </div>
-
-                {/* Preview of the uploaded image */}
-                {imagePreview && (
-                  <div className="form-div">
-                    <label className="label">Image Preview:</label>
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      style={{ width: "300px", height: "auto" }}
-                    />
-                  </div>
-                )}
-
-              </div>
-            </div>
-          </div>
-          <button className="add--add-btn">Add</button>
-        </form>
-      </div>
-    </div>
+            <button className="add--add-btn">Add</button>
+          </form>
+        </div>
+        </div>
+      </EmployeeProtectedPage>
     </>
   );
 }
