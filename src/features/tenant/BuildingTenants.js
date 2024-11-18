@@ -188,29 +188,29 @@ function BuildingTenants() {
     setEditedTenant(newTenant) // Start with the new tenant in edit mode
   }
 
-    // Handle sorting
-    const handleSort = (column) => {
-        const newSortOrder = sortOrder === "asc" ? "desc" : "asc"
-    
-        const sortedTenants = [...tenants].sort((a, b) => {
-        const aValue = a[column]
-        const bValue = b[column]
-    
-        // Check if the values are numbers; if so, compare numerically
-        if (!isNaN(aValue) && !isNaN(bValue)) {
-            return newSortOrder === "asc" ? aValue - bValue : bValue - aValue
-        }
-    
-        // Otherwise, compare alphabetically
-        if (aValue < bValue) return newSortOrder === "asc" ? -1 : 1
-        if (aValue > bValue) return newSortOrder === "asc" ? 1 : -1
-        return 0;
-        })
-    
-        setTenants(sortedTenants)
-        setSortOrder(newSortOrder)
-        setSortColumn(column)
-    }
+  // Handle sorting
+  const handleSort = (column) => {
+      const newSortOrder = sortOrder === "asc" ? "desc" : "asc"
+  
+      const sortedTenants = [...tenants].sort((a, b) => {
+      const aValue = a[column]
+      const bValue = b[column]
+  
+      // Check if the values are numbers; if so, compare numerically
+      if (!isNaN(aValue) && !isNaN(bValue)) {
+          return newSortOrder === "asc" ? aValue - bValue : bValue - aValue
+      }
+  
+      // Otherwise, compare alphabetically
+      if (aValue < bValue) return newSortOrder === "asc" ? -1 : 1
+      if (aValue > bValue) return newSortOrder === "asc" ? 1 : -1
+      return 0;
+      })
+  
+      setTenants(sortedTenants)
+      setSortOrder(newSortOrder)
+      setSortColumn(column)
+  }
   
 
   return (
