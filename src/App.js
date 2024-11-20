@@ -2,6 +2,7 @@ import React from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute"
 import { AuthProvider } from "./utils/AuthContext"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from 'axios'
 
 import Home from "./components/Pages/home/Home"
@@ -21,10 +22,11 @@ import "./App.css"
 
 axios.defaults.withCredentials = true;
 
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <div className="app-container">
         {/* <Router basename="/">
           <Routes>
@@ -71,7 +73,7 @@ function App() {
           </Router>
         </AuthProvider>
       </div>
-    </>
+    </QueryClientProvider>
   );
 }
 

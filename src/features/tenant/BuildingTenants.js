@@ -112,6 +112,8 @@ function BuildingTenants() {
   // Save existing edited tenant details
   const handleSave = () => {
     // console.log("Entered Handle Save")
+
+    // console.log("Edited Tenant: ", editedTenant)
     axios
       .patch(process.env.REACT_APP_URI + "/tenants/" + editingTenantId, editedTenant)
       .then((res) => {
