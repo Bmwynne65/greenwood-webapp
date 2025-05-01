@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../../utils/AuthContext';
 import { useHasRole, useIsActive } from '../../../utils/auth';
 
-function EmployeeProtectedPage({ children, redirectTo = '/unauthorized' }) {
+function GuestProtectedPage({ children, redirectTo = '/unauthorized' }) {
   const { isAuthenticated } = useContext(AuthContext);
   const hasGuestRole = useHasRole('Guest')
   const hasEmployeeRole = useHasRole('Employee')
@@ -11,15 +11,15 @@ function EmployeeProtectedPage({ children, redirectTo = '/unauthorized' }) {
   const hasAdminRole = useHasRole('Admin')
   const isActive = useIsActive();
 
-  console.log("EmployeeProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
-  console.log("EmployeeProtectedPage - Role: ", hasAdminRole);
-  console.log("EmployeeProtectedPage - isActive:", isActive);
-  if (isAuthenticated && hasEmployeeRole && isActive) {
+//   console.log("GuestProtectedPage - isAuthenticated:", isAuthenticated); // Should be true
+  // console.log("GuestProtectedPage - User roles:", roles); // Should include 'employee'
+
+  if (isAuthenticated && hasGuestRole && isActive) {
     return children;
   }
 
-  return (isAuthenticated && (hasEmployeeRole || hasAdminRole || hasManagerRole || hasGuestRole) && isActive) ? children : <Navigate to={redirectTo} />;
+  return (isAuthenticated && (hasGuestRole || hasEmployeeRole || hasManagerRole || hasAdminRole) && isActive) ? children : <Navigate to={redirectTo} />;
   // return <Navigate to="/unauthorized" />;
 }
 
-export default EmployeeProtectedPage;
+export default GuestProtectedPage;

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../editBuilding/Edit.css";
 import "./Add.css";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/nav/Navbar";
 import EmployeeProtectedPage from "../../components/Pages/userAccess/EmployeeProtectedPage";
 
@@ -25,29 +25,30 @@ function Add() {
   });
 
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Prepare the data object
     const data = {
       ...values,
-      vacancyRate: values.vacancyRate ? values.vacancyRate : null, // Default to 0 if not provided
+      vacancyRate: values.vacancyRate || null, // Default to 0 if not provided
       img: imageBuffer ? Array.from(imageBuffer) : null, // Ensure we send the binary image as an array
     };
-    console.log("Data to be sent:", data);
+
     axios
-      .post(process.env.REACT_APP_URI + "/buildings", data)
+      .post(process.env.REACT_APP_URI + "/buildings", data, { withCredentials: true })
       .then((res) => {
-        console.log("Building added successful:", res.data);
-        navigate("/manager");
+        console.log("Building added successfully:", res.data);
+        // Redirect back to DisplayBldgInfo and trigger a refresh
+        navigate("/manager", { state: { reloadBuildings: true } });
       })
       .catch((error) => {
         if (error.response && error.response.status === 400) {
-          alert("Address already exists"); // Display an alert or handle it however you like
+          alert("Address already exists");
         } else {
           console.error("There was an error adding the data!", error);
         }
-      }, { withCredentials: true });
+      });
   };
 
   const handleImageChange = (e) => {
@@ -59,7 +60,7 @@ function Add() {
         const buffer = new Uint8Array(arrayBuffer); // Convert ArrayBuffer to Uint8Array
         setImageBuffer(buffer); // Set image buffer for binary storage
 
-        // Optionally, you can display a preview
+        // Optionally, display a preview
         const blob = new Blob([buffer], { type: file.type });
         const previewUrl = URL.createObjectURL(blob);
         setImagePreview(previewUrl);
@@ -267,7 +268,7 @@ function Add() {
                 </div>
               </div>
             </div>
-            <button className="add--add-btn">Add</button>
+            <button className="add--add-btn" type="submit">Add</button>
           </form>
         </div>
         </div>

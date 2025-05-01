@@ -37,7 +37,7 @@ h2 {
 /* Table responsiveness and scroll */
 .table-responsive {
   width: 100%;
-  max-height: 400px; /* Set a max height for the table container */
+  max-height: 800px; /* Set a max height for the table container */
   overflow-y: auto;  /* Enable vertical scrolling */
   margin-bottom: 20px; /* Add some space under the table */
 }

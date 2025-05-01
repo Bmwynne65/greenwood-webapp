@@ -16,7 +16,7 @@ function AdminProtectedPage({ children, redirectTo = '/unauthorized' }) {
     return children;
   }
 
-  return isAuthenticated ? children : <Navigate to={redirectTo} />;
+  return (isAuthenticated && (hasAdminRole || (hasManagerRole && isActive)) && isActive) ? children : <Navigate to={redirectTo} />;
   // return <Navigate to="/unauthorized" />;
 }
 

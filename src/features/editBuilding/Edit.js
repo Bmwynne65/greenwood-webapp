@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./Edit.css";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Navbar from "../../components/nav/Navbar";
 import EmployeeProtectedPage from "../../components/Pages/userAccess/EmployeeProtectedPage";
 
 function Edit() {
   const { id } = useParams();
-  // console.log("ID: ", id)
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     id: id,
     address: "",
@@ -51,32 +53,27 @@ function Edit() {
       .catch((error) => {
         console.error("There was an error fetching the data!", error);
       });
-  }, [id]); // Add `id` as a dependency to make sure it runs when the `id` changes
-  
-
-  // console.log("img:", values.img); // Debugging line to check values
-  const navigate = useNavigate();
+  }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Prepare the data object
+
     const data = {
       ...values,
       img: imageBuffer ? Array.from(imageBuffer) : null, // Ensure we send the binary image as an array
     };
-  
+
     axios
       .patch(`${process.env.REACT_APP_URI}/buildings/${id}`, data)
       .then((res) => {
         console.log("Update successful:", res.data);
-        navigate("/manager");
+        // Redirect back to DisplayBldgInfo and trigger a refresh
+        navigate("/manager", { state: { reloadBuildings: true } });
       })
       .catch((error) => {
         console.error("There was an error updating the data!", error);
       });
   };
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -86,7 +83,7 @@ function Edit() {
         const arrayBuffer = reader.result; // This is an ArrayBuffer
         const buffer = new Uint8Array(arrayBuffer); // Convert ArrayBuffer to Uint8Array
         setImageBuffer(buffer); // Set image buffer for binary storage
-  
+
         // Optionally, display a preview
         const blob = new Blob([buffer], { type: file.type });
         const previewUrl = URL.createObjectURL(blob);

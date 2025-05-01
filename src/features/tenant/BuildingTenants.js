@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useHasRole,useIsActive } from "../../utils/auth";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaEdit, FaSave, FaTimes, FaTrash, FaPlus } from "react-icons/fa"; // Import icons
@@ -17,6 +18,11 @@ function BuildingTenants() {
   const [sortOrder, setSortOrder] = useState("asc") // "asc" for ascending, "desc" for descending
   const [sortColumn, setSortColumn] = useState(null) // Column currently being sorted
   const buttonRef = useRef(null);
+
+  // Check roles and active status
+  const isActive = useIsActive()
+  const isGuest = useHasRole('Guest') && isActive
+  const isEmployee = useHasRole('Employee') && isActive
 
   const fetchTenants = () => {
     axios
@@ -228,7 +234,8 @@ function BuildingTenants() {
         >
             <h1 className="tenant-building-name">{values.address}</h1>
         </div>
-        <div className="create-tenant-container">
+        {isEmployee && (
+          <div className="create-tenant-container">
             <button className="create-button" onClick={handleCreateTenant} ref={buttonRef}>
             <FaPlus /> Add New Tenant
             </button>
@@ -237,7 +244,8 @@ function BuildingTenants() {
                 <FaPlus className="fa-2x custom-icon"/>
             </button>
             )}  
-        </div>
+          </div>
+        )}
         <div className="tenant-center-container">
             <div className="tenant-container">
                 {tenants.length > 0 ? (
@@ -265,7 +273,7 @@ function BuildingTenants() {
                             <th>
                                 Notes
                             </th>
-                            <th>Actions</th>
+                            {isEmployee && (<th>Actions</th>)}
                         </tr>
                     </thead>
                     <tbody>
@@ -368,7 +376,8 @@ function BuildingTenants() {
                             <td>{tenant.leaseStart}</td>
                             <td>{tenant.leaseEnd}</td>
                             <td>{tenant.notes}</td>
-                            <td>
+                            {isEmployee && (
+                              <td>
                                 <div className="co-vm-buttons">
                                     <button className="edit-button" onClick={() => handleEdit(tenant)}>
                                     <FaEdit />
@@ -378,6 +387,7 @@ function BuildingTenants() {
                                     </button>
                                 </div>
                             </td>
+                          )}
                             </>
                         )}
                         </tr>

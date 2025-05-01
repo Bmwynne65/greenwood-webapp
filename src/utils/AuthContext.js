@@ -7,25 +7,36 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => JSON.parse(localStorage.getItem('isAuthenticated')) || false
   );
-  const [userRoles, setUserRoles] = useState([]);
-  const [isActive, setIsActive] = useState(false);
+  const [userRoles, setUserRoles] = useState(
+    () => JSON.parse(localStorage.getItem('userRoles')) || []
+  );
+  const [isActive, setIsActive] = useState(
+    () => JSON.parse(localStorage.getItem('isActive')) || false
+  );
 
   const checkAuthStatus = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_URI}/auth/status`, {
-        withCredentials: true
+        withCredentials: true,
       });
       setIsAuthenticated(true);
-      localStorage.setItem('isAuthenticated', 'true');
-      console.log("Is Authenticated?:", isAuthenticated)
       setUserRoles(response.data.roles || []);
       setIsActive(response.data.active || false);
+
+      // Save to localStorage
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userRoles', JSON.stringify(response.data.roles || []));
+      localStorage.setItem('isActive', JSON.stringify(response.data.active || false));
     } catch (error) {
       if (error.response && (error.response.status === 401 || error.response.status === 403)) {
         setIsAuthenticated(false);
-        localStorage.setItem('isAuthenticated', 'false');
         setUserRoles([]);
         setIsActive(false);
+
+        // Save to localStorage
+        localStorage.setItem('isAuthenticated', 'false');
+        localStorage.setItem('userRoles', JSON.stringify([]));
+        localStorage.setItem('isActive', JSON.stringify(false));
       }
     }
   };
@@ -34,9 +45,13 @@ export const AuthProvider = ({ children }) => {
     try {
       await axios.post(`${process.env.REACT_APP_URI}/auth/logout`, {}, { withCredentials: true });
       setIsAuthenticated(false);
-      localStorage.setItem('isAuthenticated', 'false');
       setUserRoles([]);
       setIsActive(false);
+
+      // Clear localStorage
+      localStorage.setItem('isAuthenticated', 'false');
+      localStorage.setItem('userRoles', JSON.stringify([]));
+      localStorage.setItem('isActive', JSON.stringify(false));
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -47,7 +62,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userRoles, isActive, checkAuthStatus, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, userRoles, isActive, checkAuthStatus, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

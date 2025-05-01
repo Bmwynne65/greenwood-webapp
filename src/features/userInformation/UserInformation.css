@@ -119,3 +119,90 @@ input:checked + .slider:before {
     margin: auto;
     padding: auto;
 }
+
+
+/* Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup Form */
+.popup-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.popup-form h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Inputs */
+.popup-form input[type="text"],
+.popup-form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Roles Checkbox */
+.roles-container {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.roles-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Buttons */
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.save-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.cancel-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+.cancel-button:hover {
+    background-color: #e53935;
+}

@@ -12,8 +12,14 @@ function UserInformation() {
         password: "",
         roles: [],
     });
+    const [newUserData, setNewUserData] = useState({
+        username: "",
+        password: "",
+        roles: []
+    });
+    const [showCreateForm, setShowCreateForm] = useState(false);
 
-    const rolesOptions = ["Admin", "Manager", "Employee"]; // Define possible roles
+    const rolesOptions = ["Admin", "Manager", "Employee", "Guest"]; // Define possible roles
 
 
     const fetchUsers = () => {
@@ -30,6 +36,14 @@ function UserInformation() {
     useEffect(() => {
         fetchUsers();
     }, []);
+
+    const handleNewUserChange = (e) => {
+        const { name, value } = e.target;
+        setNewUserData({
+            ...newUserData,
+            [name]: value
+        });
+    };
 
     const handleEditClick = (user) => {
         setEditingUserId(user._id);
@@ -48,6 +62,35 @@ function UserInformation() {
             ...editFormData,
             [name]: value,
         });
+    };
+
+    const handleRoleToggle = (role) => {
+        setNewUserData((prevData) => {
+            const updatedRoles = [...prevData.roles];
+            if (updatedRoles.includes(role)) {
+                return { ...prevData, roles: updatedRoles.filter((r) => r !== role) };
+            } else {
+                return { ...prevData, roles: [...updatedRoles, role] };
+            }
+        });
+    };
+
+    const handleCreateUser = () => {
+        if (!newUserData.username || !newUserData.password) {
+            alert("Username and password are required.");
+            return;
+        }
+
+        axios
+            .post(process.env.REACT_APP_URI + "/users", newUserData)
+            .then((res) => {
+                setUsers((prevUsers) => [...prevUsers, res.data]);
+                setShowCreateForm(false);
+                setNewUserData({ username: "", password: "", roles: [] });
+            })
+            .catch((error) => {
+                console.error("Error creating user", error);
+            });
     };
 
     const handleRoleChange = (role) => {
@@ -138,6 +181,50 @@ function UserInformation() {
         <>
             {/* <div>userInformation</div> */}
             <div className="userinformation-table-container">
+                <button onClick={() => setShowCreateForm(true)} className="add-user-button">
+                    <FaPlus /> Add New User
+                </button>
+                {showCreateForm && (
+                    <div className="popup-overlay">
+                        <div className="popup-form">
+                            <h3>Create New User</h3>
+                            <input
+                                type="text"
+                                placeholder="Enter Username"
+                                name="username"
+                                value={newUserData.username}
+                                onChange={handleNewUserChange}
+                            />
+                            <input
+                                type="password"
+                                placeholder="Enter Password"
+                                name="password"
+                                value={newUserData.password}
+                                onChange={handleNewUserChange}
+                            />
+                            <div className="roles-container">
+                                {rolesOptions.map((role) => (
+                                    <label key={role}>
+                                        <input
+                                            type="checkbox"
+                                            checked={newUserData.roles.includes(role)}
+                                            onChange={() => handleRoleToggle(role)}
+                                        />
+                                        {role}
+                                    </label>
+                                ))}
+                            </div>
+                            <div className="popup-buttons">
+                                <button onClick={() => setShowCreateForm(false)} className="cancel-button">
+                                    Cancel
+                                </button>
+                                <button onClick={handleCreateUser} className="save-button">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <table>
                     <thead>
                         <tr>

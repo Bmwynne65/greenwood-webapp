@@ -9,6 +9,7 @@ import axios from "axios";
 import "./MapWithMarkers.css";
 import { TbBackground } from "react-icons/tb";
 
+
 const containerStyle = {
   width: "100%",
   height: "90vh",
@@ -46,13 +47,16 @@ const MapWithMarkers = () => {
                 const geocode = await geocodeAddress(item.address);
                 return {
                   ...item,
+                  img: item.imageBlob || "", // Assuming imageBlob is the base64 image string
                   position: geocode,
                 };
               })
             );
             setLocations(geocodedLocations);
           };
-          fetchLocations();
+          fetchLocations().catch(err =>
+            console.error("Error geocoding locations:", err)
+          );
         })
         .catch((error) => {
           console.error("There was an error fetching the data!", error);
@@ -147,7 +151,7 @@ const MapWithMarkers = () => {
                       <div className="article-wrapper">
                         <figure className="fig">
                           <img
-                            src={location.imageBlob}
+                            src={location.img}
                             alt={"Picture of " + location.address}
                           />
                         </figure>

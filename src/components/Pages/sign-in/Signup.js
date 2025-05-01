@@ -10,13 +10,14 @@ function SignUp({ FormHandle }) {
   const { checkAuthStatus } = useContext(AuthContext); // Access Auth context
   const [User, setUser] = useState("");
   const [Password, setPassword] = useState("");
+  const [ErrorMessage, setErrorMessage] = useState(""); // Error message state
   const navigate = useNavigate();
 
   const AuthCheck = async (e) => {
     e.preventDefault();
 
     if (!User || !Password) {
-      alert("Please Fill All the Fields");
+      setErrorMessage("Please fill all the fields.");
       return;
     }
 
@@ -29,22 +30,22 @@ function SignUp({ FormHandle }) {
       console.log("Login response:", response);
 
       if (response.status === 200) {
-        alert("Login Successful!");
+        // alert("Login Successful!");
         
         // Ensure authentication status is updated before navigating
         await checkAuthStatus(); // Wait for auth status update
         setUser("");
         setPassword("");
-
+        setErrorMessage(""); // Clear error message
         navigate(`/map`); // Navigate to Manager page after auth update
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        alert("User not found.");
+        setErrorMessage("User not found.");
       } else if (error.response && error.response.status === 401) {
-        alert("Incorrect password.");
+        setErrorMessage("Incorrect username or password.");
       } else {
-        alert("An error occurred. Please try again.");
+        setErrorMessage("An error occurred. Please try again.");
       }
     }
   };
@@ -57,6 +58,11 @@ function SignUp({ FormHandle }) {
         </NavLink>
         <h2>Sign In</h2>
         <form onSubmit={AuthCheck}>
+          {ErrorMessage && (
+            <p style={{ color: "red", fontSize: "medium", marginBottom: "8px" }}>
+              {ErrorMessage}
+            </p>
+          )}
           <div className="form-control">
             <input
               type="text"
