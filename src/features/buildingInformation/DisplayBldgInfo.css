@@ -1,29 +1,11 @@
-.container-top {
-  display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
-  width: 90%; /* Full width */
-  margin: 0px auto;
-  padding: 0px 0px;
-  /* background-color: #f9f9f9; */
-  border-radius: 8px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-  flex-direction: column;
-  overflow-x: auto;
-}
-
-/* Center the container on the page */
+/* ---------- Container & Heading ---------- */
 .container {
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
-  width: 90%; /* Full width */
-  margin: 0px auto 50px;
-  padding: 30px 20px 0px 20px;
-  /* background-color: #f9f9f9; */
-  border-radius: 8px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
   flex-direction: column;
+  width: 90%;
+  margin: 0 auto 50px;
+  padding: 30px 20px 0;
+  border-radius: 8px;
   overflow-x: auto;
 }
 
@@ -34,75 +16,173 @@ h2 {
   text-align: center;
 }
 
-/* Table responsiveness and scroll */
+/* ---------- Filter Bar ---------- */
+.filter-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+  padding-top: 16px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.left-side-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-input {
+  min-height: 50px;
+  width: 75%;
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
+
+/* ---------- Sub-market Dropdown ---------- */
+.dropdown {
+  position: relative;
+}
+.dropbtn {
+  background-color: #04aa6d;
+  color: white;
+  padding: 6px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 80px;
+}
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Buttons inside the dropdown */
+.dropdown-content .subMarket-filter-btn {
+  width: 100%;
+  background-color: #f9f9f9;
+  color: black;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+}
+.dropdown-content .subMarket-filter-btn:hover {
+  background-color: #9aa09b;
+}
+
+/* ---------- Clear Button ---------- */
+.clearbtn {
+  background-color: #1b44b6;
+  color: white;
+  padding: 16px 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  min-width: 80px;
+}
+.clearbtn:hover {
+  background-color: #0e2a7a;
+}
+.clearbtn:active {
+  transform: scale(0.95);
+}
+
+/* ---------- Add Button ---------- */
+.button-nav-container {
+  padding: 0 8px;
+}
+.btn-add {
+  background-color: #1b44b6;
+  color: white;
+  padding: 16px 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  min-width: 80px;
+}
+.btn-add:hover {
+  background-color: #140e70;
+}
+.link-dec {
+  text-decoration: none;
+  color: white;
+}
+
+/* ---------- Table & Scrolling ---------- */
 .table-responsive {
   width: 100%;
-  max-height: 800px; /* Set a max height for the table container */
-  overflow-y: auto;  /* Enable vertical scrolling */
-  margin-bottom: 20px; /* Add some space under the table */
+  max-height: 800px;
+  overflow-y: auto;
+  margin-bottom: 20px;
 }
 
 table {
-  width: 100%; /* Table takes full width of its container */
+  width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
 }
 
-th,
-td {
+th, td {
   padding: 12px;
   text-align: left;
 }
 
+/* Sticky header */
 .table-responsive table thead th {
   position: sticky;
-  top: 0px; /* Stick to the top of the container */
-  z-index: 2; /* Ensure it stays above the rows */
-  background-color: #353535; /* Same background as the header */
-  color: white; /* Text color for header */
-  padding: 12px;
-  text-align: left;
+  top: 0;
+  z-index: 2;
+  background-color: #353535;
+  color: white;
 }
 
-.table-responsive td {
-  /* background-color: #f2f2f2; */
+/* center just the vacancy column cells */
+.dbi-td-vacancy {
+  text-align: center;    /* center inline/inline-block content */
+  vertical-align: middle;
+}
+
+/* Row styling */
+/* .table-responsive td {
   border-bottom: 1px solid #ddd;
-}
-
-.link {
-  /* background-color: #f2f2f2; */
-  border-bottom: 1px solid #ddd;
-}
-
-.link:hover {
-  /* background-color: #f2f2f2; */
-  border-bottom: 1px solid #ddd;
-  text-decoration: solid underline #133786 2px;
-  cursor: pointer;
-}
-
-.table-responsive tr:nth-child(n + 1):hover {
-  cursor: pointer;
-  background-color: #74df74;
-}
-
+} */
 .table-responsive tr:nth-child(even) {
   background-color: #e2e2e2;
 }
-
-/* Button layout */
-.btn-layout {
-  display: flex;
-  justify-content: space-around;
+.table-responsive tr:hover {
+  background-color: #74df74;
+  cursor: pointer;
 }
 
-/* button {
-  padding: 8px 16px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-} */
+/* ---------- Action Buttons in Rows ---------- */
+.btn-layout {
+  display: flex;
+  justify-content: center;  
+  align-items: center;       
+  gap: 8px;
+  margin: auto                
+}
 
 /* Update Button */
 .btn-upd {
@@ -136,152 +216,57 @@ td {
   background-color: #ac2424;
 }
 
-.link-dec {
-  text-decoration: none;
-  color: white;
-}
-
-.button-nav-container {
-  /* background-color: red; */
-  padding: 0px 8px;
-  /* Removed incorrect properties */
-}
-
-.btn-add {
-  background-color: #1b44b6;
-  color: white;
-  padding: 16px 12px;
-  font-size: 16px;
-  border: none;
-}
-
-.btn-add:hover {
-  background-color: #140e70;
-}
-
-.left-side-btns {
-  display: flex; /* Aligns search, dropdown, and clear button in a row */
-  gap: 10px; /* Adds space between the left-side elements */
-  align-items: center;
-}
-
-.search-container {
-  /* background-color: rgb(187, 0, 171); */
-  display: flex;
-  justify-content: space-between; /* Separates left and right sections */
-  padding: 10px 0px;
-}
-
-.search-input {
-  min-height: 50px;
-  width: 75%;
-  padding: 8px;
-  border: 1px solid #000000;
-  border-radius: 4px;
-}
-
-/* Ensure the search and upload sections are sticky */
-.filter-container {
-  position: sticky;
-  top: 0; /* Stick to the top of the container */
-  z-index: 100; /* Ensure it's above the table */
-  background-color: white; /* Same background as the container */
-  padding-top: 16px;
-}
-
-/* Dropdown Button */
-.dropbtn {
-  background-color: #04aa6d;
-  color: white;
-  padding:  6px;
-  font-size: 16px;
-  border: none;
-  max-width: 200px;
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-  background-color: #a6f0b1;
-
-}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-  background-color: #3e8e41;
-}
-
-/* Links inside the dropdown */
-.subMarket-filter-btn {
-  width: 100%;
-  background-color: #f9f9f9;
-  color: black;
-  padding: 12px;
-  text-align: left;
-  cursor: pointer;
-  font-size: 16px;
-  border: none;
-  display: block;
-}
-
-.subMarket-filter-btn:hover {
-  background-color: #9aa09b;
-}
-
-/* The container <div> for Clear Button */
-.cleardropdown {
-  position: relative;
+/* ---------- Circular Vacancy Chart ---------- */
+.circular-chart {
   display: inline-block;
-  padding: 0px 8px;
+  width: 4em;
+  height: 4em;
+  margin: 0 auto;
+}
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  animation: progress 1s ease-out forwards;
+}
+.percentage {
+  font-size: 0.5em;
+  text-anchor: middle;
+  fill: #666;
+}
+@keyframes progress {
+  0% { stroke-dasharray: 0 100; }
+}
+.circular-chart.green .circle { stroke: #4CC790; }
+.circular-chart.orange .circle { stroke: #ff9f00; }
+.circular-chart.blue .circle   { stroke: #e53c3c; }
+
+/* ---------- Loading Spinner ---------- */
+.loading-spinner {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #1b44b6;
+  animation: spin 1s ease-in-out infinite;
+  margin: 2rem auto;
 }
 
-/* Clear Button */
-.clearbtn {
-  background-color: #1b44b6;
-  color: white;
-  padding: 16px 12px;
-  font-size: 16px;
-  border: none;
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 }
 
-.clearbtn:hover {
-  background-color: #0e2a7a;
-}
-
-.clearbtn:active {
-  scale: 0.95;
-}
-
-
-.text-red {
-  color: red;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

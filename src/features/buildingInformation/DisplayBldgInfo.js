@@ -1,86 +1,141 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useHasRole, useIsActive } from "../../utils/auth";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./DisplayBldgInfo.css";
 
-const MIN_LOADING_TIME = 1000; // Minimum loading time in milliseconds
+const currencyFormatter = new Intl.NumberFormat("en-US");
+
+
+
+// Renders a circular progress chart, with `percentage` 0–100
+const CircularChart = ({ percentage, colorClass }) => {
+  const dash = `${percentage}, 100`;
+  return (
+    <svg viewBox="0 0 36 36" className={`circular-chart ${colorClass}`}>
+      <path
+        className="circle-bg"
+        d="M18 2.0845
+           a 15.9155 15.9155 0 0 1 0 31.831
+           a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+      <path
+        className="circle"
+        strokeDasharray={dash}
+        d="M18 2.0845
+           a 15.9155 15.9155 0 0 1 0 31.831
+           a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+      <text x="18" y="20.35" className="percentage">
+        {`${percentage}%`}
+      </text>
+    </svg>
+  );
+};
+
+const columns = [
+  { key: "address",       label: "Address",          sortable: true  },
+  { key: "subMarket",     label: "Sub Market",       sortable: true  },
+  { key: "yoc",           label: "YOC",              sortable: true  },
+  { key: "currentOwner",  label: "Current Owner",    sortable: false },
+  { key: "previousOwner", label: "Previous Owner",   sortable: false },
+  { key: "leaseRate",     label: "Lease Rate",       sortable: true  },
+  { key: "vacancyRate",   label: "Vacancy Rate",     sortable: true },
+  { key: "lsf",           label: "Last Sold For",    sortable: true  },
+  { key: "on",            label: "On",               sortable: false },
+];
 
 const DisplayBldgInfo = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const location = useLocation();
-  const reloadBuildings = location.state?.reloadBuildings || false; // Check if reload is required
-
-  const [subMarket, setSubMarket] = useState("");
-  const [search, setSearch] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [sortColumn, setSortColumn] = useState(null);
-  const [isTableLoading, setIsTableLoading] = useState(false); // Local loading state for table
-
-  const active = useIsActive();
-  const isGuest = useHasRole("Guest") && active;
+  const active   = useIsActive();
   const isEmployee = useHasRole("Employee") && active;
 
-  // Fetch buildings with filters applied
-  const fetchBuildings = useCallback(async () => {
-    const response = await axios.get(`${process.env.REACT_APP_URI}/buildings`, {
-      params: { search, subMarket, sortColumn, sortOrder },
-      withCredentials: true,
-    });
-    return response.data;
-  }, [search, subMarket, sortColumn, sortOrder]);
+  // State
+  const [allBuildings, setAllBuildings] = useState(null);
+  const [search,       setSearch]       = useState("");
+  const [subMarket,    setSubMarket]    = useState("");
+  const [sortColumn,   setSortColumn]   = useState(null);
+  const [sortOrder,    setSortOrder]    = useState("asc");
 
-  const { data: buildings = [], isLoading: isGlobalLoading, refetch } = useQuery({
-    queryKey: ["buildings", { search, subMarket, sortColumn, sortOrder }],
-    queryFn: fetchBuildings,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-  });
-
+  // Fetch once on mount
   useEffect(() => {
-    if (reloadBuildings) {
-      refetch(); // Reload data if triggered by Add component
-      navigate("/manager", { replace: true, state: {} }); // Clear reload state
-    }
-  }, [reloadBuildings, refetch, navigate]);
+    axios
+      .get(`${process.env.REACT_APP_URI}/buildings`, { withCredentials: true })
+      .then(res => setAllBuildings(res.data))
+      .catch(err => { console.error(err); setAllBuildings([]); });
+  }, []);
 
-  const enforceMinimumLoadingTime = async (action) => {
-    setIsTableLoading(true);
-    const startTime = Date.now();
-    await action(); // Perform the action (e.g., refetch)
-    const elapsedTime = Date.now() - startTime;
-    if (elapsedTime < MIN_LOADING_TIME) {
-      setTimeout(() => setIsTableLoading(false), MIN_LOADING_TIME - elapsedTime);
+  // Sorting handler
+  const handleSort = column => {
+    if (sortColumn === column) {
+      setSortOrder(o => (o === "asc" ? "desc" : "asc"));
     } else {
-      setIsTableLoading(false);
+      setSortColumn(column);
+      setSortOrder("asc");
     }
   };
 
-  const handleSort = (column) => {
-    setSortColumn(column);
-    setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
-    enforceMinimumLoadingTime(refetch); // Use minimum loading time logic
+  // Clear filters and sort
+  const handleClear = () => {
+    setSearch("");
+    setSubMarket("");
+    setSortColumn(null);
+    setSortOrder("asc");
   };
 
-  const handleFilterChange = (e) => {
-    const { value, name } = e.target;
-    if (name === "subMarket") setSubMarket(value);
-    if (name === "search") setSearch(value);
-    // enforceMinimumLoadingTime(refetch); // Use minimum loading time logic
-  };
-
-  const handleDelete = async (Id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this building?");
-    if (confirmDelete) {
-      try {
-        await axios.delete(`${process.env.REACT_APP_URI}/buildings/${Id}`, { withCredentials: true });
-        enforceMinimumLoadingTime(refetch); // Use minimum loading time logic
-      } catch (error) {
-        console.error("There was an error deleting the building!", error);
-      }
+  // Delete building (client-side update)
+  const handleDelete = id => {
+    if (window.confirm("Delete this building?")) {
+      axios
+        .delete(`${process.env.REACT_APP_URI}/buildings/${id}`, { withCredentials: true })
+        .then(() => setAllBuildings(prev => prev.filter(b => b._id !== id)))
+        .catch(console.error);
     }
   };
+
+  // Filtered + sorted data
+  const buildings = useMemo(() => {
+    if (!allBuildings) return null;
+    let data = allBuildings;
+
+    if (search) {
+      data = data.filter(b =>
+        b.address.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    if (subMarket) {
+      data = data.filter(b => b.subMarket === subMarket);
+    }
+    if (sortColumn) {
+      data = [...data].sort((a, b) => {
+        const rawA = a[sortColumn] ?? "";
+        const rawB = b[sortColumn] ?? "";
+      
+        // Try to turn them into floats
+        const numA = parseFloat(rawA) || 0;
+        const numB = parseFloat(rawB) || 0;
+      
+        // If both really are numbers, sort numerically
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return sortOrder === "asc" ? numA - numB : numB - numA;
+        }
+      
+        // Fallback to string compare
+        if (rawA < rawB) return sortOrder === "asc" ? -1 : 1;
+        if (rawA > rawB) return sortOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+    return data;
+  }, [allBuildings, search, subMarket, sortColumn, sortOrder]);
+
+  if (buildings === null) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">
@@ -94,120 +149,101 @@ const DisplayBldgInfo = () => {
                 type="text"
                 placeholder="Search by address..."
                 value={search}
-                name="search"
-                onChange={handleFilterChange}
+                onChange={e => setSearch(e.target.value)}
               />
               <div className="dropdown">
                 <button className="dropbtn">Sub-markets</button>
                 <div className="dropdown-content">
-                  <button
-                    className="subMarket-filter-btn"
-                    name="subMarket"
-                    value="DTC"
-                    onClick={handleFilterChange}
-                  >
-                    DTC
-                  </button>
-                  <button
-                    className="subMarket-filter-btn"
-                    name="subMarket"
-                    value="Centennial"
-                    onClick={handleFilterChange}
-                  >
-                    Centennial
-                  </button>
+                  {["", "DTC", "Centennial", "Greenwood Village"].map(m => (
+                    <button
+                      key={m}
+                      className="subMarket-filter-btn"
+                      onClick={() => setSubMarket(m)}
+                    >
+                      {m || "All"}
+                    </button>
+                  ))}
                 </div>
               </div>
-              <button
-                className="clearbtn"
-                onClick={() => {
-                  setSubMarket("");
-                  setSearch("");
-                  setSortColumn(null);
-                  setSortOrder("asc");
-                  enforceMinimumLoadingTime(refetch); // Use minimum loading time logic
-                }}
-              >
+              <button className="clearbtn" onClick={handleClear}>
                 Clear
               </button>
             </div>
             {isEmployee && (
               <div className="button-nav-container">
-                <button className="btn-add">
-                  <Link className="link-dec" to={`/add`}>
-                    Add +
-                  </Link>
-                </button>
+                <Link className="btn-add link-dec" to="/add">
+                  Add +
+                </Link>
               </div>
             )}
           </div>
         </div>
+
         <div className="table-responsive">
-          {isGlobalLoading || isTableLoading ? (
-            <div className="loading-indicator">Loading...</div>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th onClick={() => handleSort("address")}>
-                    Address {sortColumn === "address" && (sortOrder === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("subMarket")}>
-                    Sub-Market {sortColumn === "subMarket" && (sortOrder === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("yoc")}>
-                    YOC {sortColumn === "yoc" && (sortOrder === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th>Current Owner</th>
-                  <th>Previous Owner</th>
-                  <th onClick={() => handleSort("leaseRate")}>
-                    Lease Rate {sortColumn === "leaseRate" && (sortOrder === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("vacancyRate")}>
-                    Vacancy Rate {sortColumn === "vacancyRate" && (sortOrder === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("lsf")}>
-                    Last Sold For {sortColumn === "lsf" && (sortOrder === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th>On</th>
-                  {isEmployee && <th>Actions</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {buildings.map((building) => (
-                  <tr
-                    key={building._id}
-                    onDoubleClick={() => navigate(`/tenant/${building._id}`)}
+          <table>
+            <thead>
+              <tr>
+                {columns.map(({ key, label, sortable }) => (
+                  <th
+                    key={key}
+                    onClick={sortable ? () => handleSort(key) : undefined}
                   >
-                    <td>{building.address}</td>
-                    <td>{building.subMarket}</td>
-                    <td>{building.yoc || "UNK"}</td>
-                    <td>{building.currentOwner || "N/A"}</td>
-                    <td>{building.previousOwner || "N/A"}</td>
-                    <td>{building.leaseRate ? `$${building.leaseRate}/SF` : "UNK"}</td>
-                    <td>{building.vacancyRate ? `${building.vacancyRate}%` : "UNK"}</td>
-                    <td>{building.lsf ? `$${building.lsf}` : "UNK"}</td>
-                    <td>{building.on}</td>
-                    {isEmployee && (
-                      <td>
-                        <div className="btn-layout">
-                          <button
-                            className="btn-del"
-                            onClick={() => handleDelete(building._id)}
-                          >
-                            Delete
-                          </button>
-                          <Link className="btn-upd" to={`/edit/${building._id}`}>
-                            Edit
-                          </Link>
-                        </div>
-                      </td>
-                    )}
-                  </tr>
+                    {label}
+                    {sortable && sortColumn === key &&
+                      (sortOrder === "asc" ? " ↑" : " ↓")}
+                  </th>
                 ))}
-              </tbody>
-            </table>
-          )}
+                {isEmployee && <th>Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {buildings.map(b => (
+                <tr key={b._id} onDoubleClick={() => navigate(`/tenant/${b._id}`)}>
+                  <td>{b.address}</td>
+                  <td>{b.subMarket}</td>
+                  <td>{b.yoc || "UNK"}</td>
+                  <td>{b.currentOwner || "N/A"}</td>
+                  <td>{b.previousOwner || "N/A"}</td>
+                  <td>{b.leaseRate ? `$${b.leaseRate}/SF` : "UNK"}</td>
+                  <td className="dbi-td dbi-td-vacancy">
+                    {b.vacancyRate != null ? (
+                      <CircularChart
+                        percentage={b.vacancyRate}
+                        colorClass={
+                          b.vacancyRate < 30
+                            ? "green"
+                            : b.vacancyRate < 70
+                            ? "orange"
+                            : "blue"
+                        }
+                      />
+                    ) : (
+                      "N/A"
+                    )}
+                  </td>
+                  <td>
+                    {b.lsf
+                      ? `$${currencyFormatter.format(b.lsf)}`
+                      : "UNK"
+                    }
+                  </td>
+                  <td>{b.on}</td>
+                  {isEmployee && (
+                    <td>
+                      <div className="btn-layout">
+                        <button className="btn-del" onClick={() => handleDelete(b._id)}>
+                          Delete
+                        </button>
+                        <Link className="btn-upd" to={`/edit/${b._id}`}>
+                          Edit
+                        </Link>
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
