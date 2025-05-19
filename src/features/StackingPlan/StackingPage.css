@@ -1,0 +1,197 @@
+/* StackingPage.css */
+
+/* ==========================
+   Base Styles
+   ========================== */
+   * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    color: #333;
+  }
+  
+  /* ==========================
+     Layout Container
+     ========================== */
+  .stacking-plan {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+  
+  /* ==========================
+     Building Header
+     ========================== */
+  .building-header {
+    /* background-color: #fff; */
+    padding: 16px 24px;
+    text-align: center;
+  }
+  .building-header h1 {
+    font-size: 1.75rem;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* ==========================
+     Floor Sections
+     ========================== */
+  .floor {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ccc;
+  }
+  .floor-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #333;
+  }
+  
+  /* ==========================
+     Tenant Row
+     ========================== */
+  .tenant-row {
+    display: flex;
+    gap: 12px;
+  }
+  
+  /* ==========================
+     Tenant Box
+     ========================== */
+  .tenant-box {
+    flex: 1 1 auto;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 60px;
+    text-align: center;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  .tenant-box:hover {
+    background-color: #eef1f5;
+    border-color: #bbb;
+  }
+  
+  .tenant-box.vacant {
+    background-color: #e6f9e6;
+    border-color: #3c763d;
+  }
+  
+  .tenant-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #222;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .tenant-info {
+    font-size: 0.875rem;
+    color: #555;
+  }
+  
+  /* ==========================
+     Modal Keyframes
+     ========================== */
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  /* ==========================
+     Modal Overlay
+     ========================== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* ==========================
+     Modal Content
+     ========================== */
+  .modal-content {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    padding: 32px 24px;
+    max-width: 400px;
+    width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    position: relative;
+    animation: modalFadeIn 0.3s ease-out both;
+  }
+  
+  .modal-content h2 {
+    margin-bottom: 12px;
+    font-size: 1.6rem;
+    color: #2c3e50;
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 8px;
+  }
+  
+  .modal-content p {
+    margin: 8px 0;
+    color: #34495e;
+    line-height: 1.5;
+  }
+  .modal-content p::before {
+    content: '•';
+    color: #e67e22;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+  
+  /* ==========================
+     Modal Close Button
+     ========================== */
+  .modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    animation: pulse 1.5s ease-in-out infinite;
+    transition: transform 0.2s;
+  }
+  .modal-close-btn:hover {
+    transform: rotate(90deg);
+  }

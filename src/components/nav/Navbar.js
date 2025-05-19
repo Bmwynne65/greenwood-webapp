@@ -101,7 +101,7 @@ function Navbar() {
                 }
                 onClick={closeMobileMenu}
               >
-                Manager
+                Building DB
               </NavLink>
             </li>
             {(isAdmin || isManager) && (

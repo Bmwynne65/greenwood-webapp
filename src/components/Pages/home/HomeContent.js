@@ -6,7 +6,7 @@ function HomeContent() {
   return (
       <div className="hero-container">
         {/* <video src="\videos\video-2.mp4" autoPlay loop muted /> */}
-        <h1>GREENWOOD BUILDING REPO</h1>
+        <h1>i-STACK</h1>
         {/* <p>What are you waiting for?</p> */}
         <div className="hero-btns">
           {/* <Button

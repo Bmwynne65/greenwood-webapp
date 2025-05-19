@@ -14,6 +14,7 @@ import Add from "./features/add/Add"
 import Tenant from "./components/Pages/tenantPage/Tenant"
 import SignIn from "./components/Pages/sign-in/Signup"
 import UserManagement from "./components/Pages/userManagement/userManagement"
+import StackingPage from "./components/Pages/stacking plan/StackingPlan";
 
 import Unauthorized from "./components/Pages/unauthorized/unauthorized"
 import AdminProtectedPage from "./components/Pages/userAccess/AdminProtectedPage"
@@ -69,6 +70,7 @@ function App() {
               <Route path="/add" exact element={<Add />} /> 
               <Route path="/tenant/:id" exact element={<Tenant />} />
               <Route path="/edit/:id" exact element={<Edit />} />
+              <Route path="/stackingPage/:id" exact element={<StackingPage />} />
             </Routes>
           </Router>
         </AuthProvider>

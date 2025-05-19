@@ -21,7 +21,7 @@ h2 {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: white;
+  /* background-color: white; */
   padding-top: 16px;
 }
 
@@ -74,7 +74,6 @@ h2 {
   display: block;
 }
 
-/* Buttons inside the dropdown */
 .dropdown-content .subMarket-filter-btn {
   width: 100%;
   background-color: #f9f9f9;
@@ -108,6 +107,12 @@ h2 {
 }
 
 /* ---------- Add Button ---------- */
+.right-side-btns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
 .button-nav-container {
   padding: 0 8px;
 }
@@ -148,6 +153,29 @@ th, td {
   text-align: left;
 }
 
+/* Icon Column */
+th:first-child,
+td.icon-cell {
+  width: 80px;
+  text-align: center;
+}
+
+.icon-cell-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.icon-cell svg {
+  font-size: 1.25em;
+  color: #333;
+  cursor: pointer;
+}
+.icon-cell svg:hover {
+  color: #ffffff;
+}
+
 /* Sticky header */
 .table-responsive table thead th {
   position: sticky;
@@ -157,34 +185,23 @@ th, td {
   color: white;
 }
 
-/* center just the vacancy column cells */
-.dbi-td-vacancy {
-  text-align: center;    /* center inline/inline-block content */
-  vertical-align: middle;
-}
-
 /* Row styling */
-/* .table-responsive td {
-  border-bottom: 1px solid #ddd;
-} */
 .table-responsive tr:nth-child(even) {
   background-color: #e2e2e2;
 }
 .table-responsive tr:hover {
   background-color: #74df74;
-  cursor: pointer;
 }
 
 /* ---------- Action Buttons in Rows ---------- */
 .btn-layout {
   display: flex;
-  justify-content: center;  
-  align-items: center;       
+  justify-content: center;
+  align-items: center;
   gap: 8px;
-  margin: auto                
+  margin: auto;
 }
 
-/* Update Button */
 .btn-upd {
   text-decoration: none;
   padding: 8px 16px;
@@ -192,36 +209,30 @@ th, td {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  border-radius: 4px;
   background-color: #45a049;
-  margin-right: 8px;
 }
-
 .btn-upd:hover {
   background-color: #285e2b;
 }
 
-/* Delete Button */
 .btn-del {
   background-color: #e63232;
-  margin-right: 8px;
   padding: 8px 16px;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-
 .btn-del:hover {
   background-color: #ac2424;
 }
 
-/* ---------- Circular Vacancy Chart ---------- */
+/* ---------- Circular Chart ---------- */
 .circular-chart {
   display: inline-block;
   width: 4em;
   height: 4em;
-  margin: 0 auto;
+  margin-bottom: 8px;
 }
 .circle-bg {
   fill: none;
@@ -246,7 +257,7 @@ th, td {
 }
 .circular-chart.green .circle { stroke: #4CC790; }
 .circular-chart.orange .circle { stroke: #ff9f00; }
-.circular-chart.blue .circle   { stroke: #e53c3c; }
+.circular-chart.blue  .circle { stroke: #e53c3c; }
 
 /* ---------- Loading Spinner ---------- */
 .loading-spinner {
@@ -259,14 +270,66 @@ th, td {
   animation: spin 1s ease-in-out infinite;
   margin: 2rem auto;
 }
-
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 200px;
 }
-
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ---------- Summary Columns Layout ---------- */
+.summary-columns {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* Each column stacks vertically */
+.summary-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 200px;
+}
+
+/* ---------- Summary Card ---------- */
+.summary-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  text-align: center;
+}
+
+.summary-card h4 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-card p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1b44b6;
+}
+
+/* Occupancy cards ring colored */
+.summary-card.occupancy p {
+  color: #4CC790;
+}
+
+/* Single summary column adjustment */
+.summary-column:only-child {
+  flex: 0 1 500px;
+  margin: 0 auto;
+}
+.summary-card.occupancy p {
+  color: #4CC790;
 }
