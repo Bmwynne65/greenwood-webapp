@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Papa from "papaparse";
 import "../editBuilding/Edit.css";
 import "./Add.css";
 import axios from "axios";
@@ -7,9 +8,10 @@ import Navbar from "../../components/nav/Navbar";
 import EmployeeProtectedPage from "../../components/Pages/userAccess/EmployeeProtectedPage";
 
 function Add() {
-  const [imageBuffer, setImageBuffer] = useState(null); // To store the binary of the uploaded image
-  const [imagePreview, setImagePreview] = useState(""); // To preview the uploaded image
-
+  const [imageBuffer, setImageBuffer] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [csvFile, setCsvFile] = useState(null);
+  const [csvData, setCsvData] = useState([]);
   const [values, setValues] = useState({
     address: "",
     subMarket: "",
@@ -18,6 +20,7 @@ function Add() {
     currentOwner: "",
     previousOwner: "",
     leaseRate: "",
+    vacancyRate: "",
     rsf: "",
     lsf: "",
     on: "",
@@ -26,58 +29,164 @@ function Add() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleCsvChange = (e) => {
+    const file = e.target.files[0];
+    if (file && file.name.toLowerCase().endsWith('.csv')) {
+      setCsvFile(file);
+      // Parse metadata and stacking data separately
+      Papa.parse(file, {
+        skipEmptyLines: true,
+        complete: (results) => {
+          const rows = results.data;
+          const headerIdx = rows.findIndex(
+            (row) => row[0] && row[0].toString().trim() === 'Tenant'
+          );
+          const metaRows = rows.slice(0, headerIdx);
 
-    const data = {
-      ...values,
-      vacancyRate: values.vacancyRate || null, // Default to 0 if not provided
-      img: imageBuffer ? Array.from(imageBuffer) : null, // Ensure we send the binary image as an array
-    };
+          let address = "";
+          let yoc = "";
+          let rnv = "";
+          let currentOwner = "";
+          let previousOwner = "";
+          let leaseRate = "";
+          let vacancyRate = "";
 
-    axios
-      .post(process.env.REACT_APP_URI + "/buildings", data, { withCredentials: true })
-      .then((res) => {
-        console.log("Building added successfully:", res.data);
-        // Redirect back to DisplayBldgInfo and trigger a refresh
-        navigate("/manager", { state: { reloadBuildings: true } });
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 400) {
-          alert("Address already exists");
-        } else {
-          console.error("There was an error adding the data!", error);
-        }
+          metaRows.forEach((row) => {
+            const cell = row[0] ? row[0].toString().trim() : "";
+            // Address line: skip header label and look for first cell with 2+ commas
+            if (
+              !address &&
+              cell &&
+              cell.includes(',') &&
+              cell.split(',').length >= 3 &&
+              !cell.toLowerCase().includes('building name')
+            ) {
+              address = cell.replace(/"/g, '').trim();
+            } else if (cell.startsWith('YOC')) {
+              const parts = cell.split('|');
+              const yocMatch = parts[0].match(/YOC\s*-\s*(\d{4})/);
+              const rnvMatch = parts[1] && parts[1].match(/RNV\s*-\s*(\d{4})/);
+              if (yocMatch) yoc = yocMatch[1];
+              if (rnvMatch) rnv = rnvMatch[1];
+            } else if (cell.startsWith('Current Owner')) {
+              const match = cell.match(/Current Owner\s*-\s*(.+)/);
+              if (match) currentOwner = match[1].trim();
+            } else if (cell.startsWith('Previous Owner')) {
+              const match = cell.match(/Previous Owner\s*-\s*(.+)/);
+              if (match) previousOwner = match[1].trim();
+            } else if (cell.startsWith('Asking Lease Rate')) {
+              const match = cell.match(/Asking Lease Rate\s*-\s*(.+)/);
+              if (match) leaseRate = match[1].trim();
+            } else if (cell.startsWith('Vacancy Rate')) {
+              const match = cell.match(/Vacancy Rate\s*-\s*(.+)/);
+              if (match) vacancyRate = match[1].trim();
+            }
+          });
+
+          // Derive Sub Market from address (city part)
+          let subMarket = "";
+          if (address.includes(',')) {
+            const parts = address.split(',');
+            if (parts[1]) subMarket = parts[1].trim();
+          }
+
+          setValues((prev) => ({
+            ...prev,
+            address,
+            subMarket,
+            yoc,
+            rnv,
+            currentOwner,
+            previousOwner,
+            leaseRate,
+            vacancyRate,
+          }));
+        },
+        error: (err) => console.error('Metadata parse error:', err),
       });
+
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          setCsvData(results.data);
+          console.log('Parsed CSV stacking data:', results.data);
+        },
+        error: (err) => {
+          console.error('Error parsing CSV:', err);
+          alert('Failed to parse CSV file.');
+        },
+      });
+    } else {
+      alert('Please upload a valid CSV file.');
+      setCsvFile(null);
+      setCsvData([]);
+    }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
+    if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const arrayBuffer = reader.result; // This is an ArrayBuffer
-        const buffer = new Uint8Array(arrayBuffer); // Convert ArrayBuffer to Uint8Array
-        setImageBuffer(buffer); // Set image buffer for binary storage
-
-        // Optionally, display a preview
+        const buffer = new Uint8Array(reader.result);
+        setImageBuffer(buffer);
         const blob = new Blob([buffer], { type: file.type });
-        const previewUrl = URL.createObjectURL(blob);
-        setImagePreview(previewUrl);
+        setImagePreview(URL.createObjectURL(blob));
       };
-      reader.readAsArrayBuffer(file); // Read the file as an ArrayBuffer
+      reader.readAsArrayBuffer(file);
     } else {
-      alert("Please upload a valid image file.");
+      alert('Please upload a valid image file.');
     }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      ...values,
+      img: imageBuffer ? Array.from(imageBuffer) : null,
+      csvStackingData: csvData.length ? csvData : null,
+    };
+
+    axios
+      .post(process.env.REACT_APP_URI + '/buildings', data, { withCredentials: true })
+      .then((res) => {
+        console.log('Building added successfully:', res.data);
+        navigate('/manager', { state: { reloadBuildings: true } });
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 400) {
+          alert('Address already exists');
+        } else {
+          console.error('There was an error adding the data!', error);
+        }
+      });
+  };
+
 
   return (
     <>
       <EmployeeProtectedPage>
         <div>
-        <Navbar />
-        <div className="container2">
-          <h2 className="title-update">Add</h2>
+          <Navbar />
+          <div className="container2">
+            <h2 className="title-update">Add</h2>
+
+            {/* CSV import at top */}
+            <div className="form-div">
+              <label className="label">Import CSV Stacking Plan:</label>
+              <input
+                className="input"
+                type="file"
+                accept=".csv"
+                onChange={handleCsvChange}
+              />
+              {csvFile && (
+                <p className="file-name">
+                  Parsed {csvData.length} stacking records from {csvFile.name}
+                </p>
+              )}
+            </div>
           <form className="form-add" onSubmit={handleSubmit}>
             <div className="inner-content">
               <div className="input-values">
@@ -266,7 +375,7 @@ function Add() {
                   )}
 
                 </div>
-              </div>
+              </div> 
             </div>
             <button className="add--add-btn" type="submit">Add</button>
           </form>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import BuildingNavBar from "../buildingNavBar/buildingnavBar";
 import "./StackingPage.css";
 
 const StackingPlan = () => {
@@ -92,62 +93,68 @@ const StackingPlan = () => {
     });
   }, [tenants]);
 
-  if (loadingBuilding) return <div>Loading building info...</div>;
+  if (loadingBuilding)  return <div className="loading-container"><div className="loading-spinner"/></div>;
   if (errorBuilding) return <div>Error loading building info.</div>;
 
   return (
-    <div className="stacking-plan">
-      <header className="building-header">
-        <h1>{building.address}</h1>
-      </header>
+    <>
+      <BuildingNavBar buildingId={id} />
+      <div className="stacking-plan">
+        <header className="building-header">
+          <h1>{building.address}</h1>
+        </header>
 
-      {loadingTenants ? (
-        <div>Loading tenants...</div>
-      ) : errorTenants ? (
-        <div>Error loading tenants.</div>
-      ) : (
-        stackingData.map(({ floor, totalSqft, tenants }) => (
-          <div key={floor} className="floor">
-            <div className="floor-header">Floor {floor}</div>
-            <div className="tenant-row">
-              {tenants.map((tenant, idx) => {
-                const widthPercent = tenant.sqft && totalSqft ? (tenant.sqft / totalSqft) * 100 : undefined;
-                return (
-                  <div
-                    key={idx}
-                    className={`tenant-box${!tenant.name || tenant.name.toLowerCase().includes("vacant") ? " vacant" : ""}`}
-                    style={widthPercent ? { flex: `0 0 ${widthPercent}%` } : { flex: "1 1 auto" }}
-                    onClick={() => setSelectedTenant(tenant)}
-                  >
-                    <div className="tenant-name">{tenant.name || "Vacant"}</div>
-                    <div className="tenant-info">
-                      Suite {tenant.suite}
-                      {tenant.sqft && ` • ${Math.round(tenant.sqft).toLocaleString()} sqft`}
+        {loadingTenants ? (
+          <div>Loading tenants...</div>
+        ) : errorTenants ? (
+          <div>Error loading tenants.</div>
+        ) : (
+          stackingData.map(({ floor, totalSqft, tenants }) => (
+            <div key={floor} className="floor">
+              <div className="floor-header">Floor {floor}</div>
+              <div className="tenant-row">
+                {tenants.map((tenant, idx) => {
+                  // Use proportional flex so boxes shrink as needed
+                  const flexValue = tenant.sqft || 1;
+                  return (
+                    <div
+                      key={idx}
+                      className={`tenant-box${!tenant.name || tenant.name.toLowerCase().includes("vacant") ? " vacant" : ""}`}
+                      style={{ flex: `${flexValue} 1 0%` }}
+                      onClick={() => setSelectedTenant(tenant)}
+                    >
+                      <div className="tenant-name">
+                        {tenant.name || "Vacant"}
+                      </div>
+                      <div className="tenant-info">
+                        Suite {tenant.suite}
+                        {tenant.sqft && ` • ${Math.round(tenant.sqft).toLocaleString()} sqft`}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            </div>
+          ))
+        )}
+
+        {selectedTenant && (
+          <div className="modal-overlay" onClick={() => setSelectedTenant(null)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close-btn" onClick={() => setSelectedTenant(null)}>
+                &times;
+              </button>
+              <h2>{selectedTenant.name}</h2>
+              <p><strong>Suite:</strong> {selectedTenant.suite}</p>
+              <p><strong>Sqft:</strong> {selectedTenant.sqft ? Math.round(selectedTenant.sqft).toLocaleString() : 'N/A'}</p>
+              <p><strong>Lease Start:</strong> {selectedTenant.data.leaseStart}</p>
+              <p><strong>Lease End:</strong> {selectedTenant.data.leaseEnd}</p>
+              <p><strong>Floor Range:</strong> {selectedTenant.data.floor}</p>
             </div>
           </div>
-        ))
-      )}
-
-      {selectedTenant && (
-        <div className="modal-overlay" onClick={() => setSelectedTenant(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={() => setSelectedTenant(null)}>
-              &times;
-            </button>
-            <h2>{selectedTenant.name}</h2>
-            <p><strong>Suite:</strong> {selectedTenant.suite}</p>
-            <p><strong>Sqft:</strong> {selectedTenant.sqft ? Math.round(selectedTenant.sqft).toLocaleString() : 'N/A'}</p>
-            <p><strong>Lease Start:</strong> {selectedTenant.data.leaseStart}</p>
-            <p><strong>Lease End:</strong> {selectedTenant.data.leaseEnd}</p>
-            <p><strong>Floor Range:</strong> {selectedTenant.data.floor}</p>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useHasRole, useIsActive } from "../../utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { MdLayers, MdPeople } from "react-icons/md";
+import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import axios from "axios";
 import "./DisplayBldgInfo.css";
 
@@ -244,13 +245,15 @@ const DisplayBldgInfo = () => {
                   ))}
                 </div>
               </div>
-              <button className="clearbtn" onClick={handleClear}>Clear</button>
+              <button className="clearbtn" onClick={handleClear}>
+                Clear
+              </button>
             </div>
             <div className="right-side-btns">
               {isEmployee && (
-                <div className="button-nav-container">
-                  <Link className="btn-add link-dec" to="/add">Add +</Link>
-                </div>
+                <Link className="icon-btn add" to="/add" title="Add Building">
+                  <MdAdd size={40} />
+                </Link>
               )}
             </div>
           </div>
@@ -303,8 +306,20 @@ const DisplayBldgInfo = () => {
                     {isEmployee && (
                       <td>
                         <div className="btn-layout">
-                          <button className="btn-del" onClick={() => handleDelete(b._id)}>Delete</button>
-                          <Link className="btn-upd" to={`/edit/${b._id}`}>Edit</Link>
+                          <Link 
+                            className="icon-btn edit" 
+                            to={`/edit/${b._id}`}
+                            title="Edit"
+                          >
+                            <MdEdit/>
+                          </Link>
+                          <button 
+                            className="icon-btn delete" 
+                            onClick={() => handleDelete(b._id)}
+                            title="Delete"
+                          >
+                            <MdDelete/>
+                          </button>
                         </div>
                       </td>
                     )}

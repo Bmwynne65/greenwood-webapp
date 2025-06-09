@@ -1,188 +1,541 @@
-/* Main Container */
-.tenant-main-container {
-    /* background-color: red; */
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    color: #333;
+/* ==========================================================================
+   Root Variables
+   ========================================================================== */
+:root {
+  --primary-color: #109648;
+  --primary-dark: #0d7a3a;
+  --secondary-color: #18a999;
+  --accent-color: #8af3ff;
+  --text-color: #ffffff;
+  --text-dark: #484349;
+  --bg-color: #161616;
+  --bg-light: #f7f0f0;
+  --hover-bg: #f5f5f5;
+  --error-color: #f44336;
+  --error-dark: #c62828;
+  --success-color: #2BC016;
+  --border-color: #d1d1d1;
+  --transition-speed: 0.3s;
+  --shadow-sm: 0 1px 4px rgba(72, 67, 73, 0.1);
+  --shadow-md: 0 4px 12px rgba(16, 150, 72, 0.3);
+  --shadow-lg: 0 8px 24px rgba(72, 67, 73, 0.3);
 }
-  
-/* Building Container */
+
+/* ==========================================================================
+   Base Reset / Font
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.tenant-main-container {
+  padding: 16px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-dark);
+  background-color: var(--bg-light);
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   Building Header Section
+   ========================================================================== */
 .tenant-building-container {
-    padding: 20px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    text-align: center;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    color: #ffffff;
+  padding: 24px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  color: var(--text-color);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.tenant-building-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(72, 67, 73, 0.7);
+  z-index: 0;
 }
 
 .tenant-building-name {
-    font-size: 28px;
-    margin: 0;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Create Tenant Button */
+/* ==========================================================================
+   "Add New Tenant" / CSV Upload Section
+   ========================================================================== */
 .create-tenant-container {
-    /* position: sticky;
-    top: 200px; */
-    text-align: right;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
-/* Main button */
+.csv-upload-input {
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--text-color);
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  color: var(--text-dark);
+}
+
+.csv-upload-input:hover,
+.csv-upload-input:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(24, 169, 153, 0.2);
+  outline: none;
+}
+
+/* ==========================================================================
+   Reusable Icon-Only Button Style
+   ========================================================================== */
+.icon-button {
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.icon-button:hover {
+  background-color: rgba(72, 67, 73, 0.1);
+  transform: translateY(-1px);
+}
+
+.icon-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(24, 169, 153, 0.3);
+}
+
+/* "Add New Tenant" Big Button */
 .create-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
+  font-size: 20px;
+  color: var(--primary-color);
+  background-color: rgba(16, 150, 72, 0.1);
+  padding: 8px 12px;
 }
 
 .create-button:hover {
-    background-color: #45a049;
+  color: var(--primary-dark);
+  background-color: rgba(16, 150, 72, 0.2);
 }
 
-/* Smaller floating button */
+/* "Add New Tenant" Floating Small Button */
 .small-create-button {
-    position: fixed;
-    bottom: 40px;
-    right: 30px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 12px 16px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 50%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000; /* Ensures it stays on top */
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 16px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  font-size: 22px;
+  transition: all var(--transition-speed) ease;
+  z-index: 10;
 }
 
 .small-create-button:hover {
-    background-color: #45a049;
+  background-color: var(--primary-dark);
+  transform: translateY(-2px) scale(1.05);
 }
 
-/* table css */
-
+/* ==========================================================================
+   Tenant Table - Container & Layout
+   ========================================================================== */
+.tenant-center-container {
+  /* You can adjust max-height as needed (e.g. “80vh” or a pixel value) */
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 0 2px 2px 2px;
+}
 
 .tenant-container table {
-    max-width: 90%;
-    margin: 40px auto; /* Centers the table */
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background-color: var(--text-color);
+  box-shadow: var(--shadow-sm);
+  border-radius: 8px;
+  /* overflow: hidden; */
+  table-layout: fixed;
 }
 
-.tenant-container table thead th {
-    position: sticky;
-    top: 80px;
-    z-index: 2; /* Ensure it stays above the rows */
-    background-color: #353535; /* Same background as the header */
-    color: white; /* Text color for header */
-    padding: 12px;
-    text-align: left;
+/* Set minimum width for tenantName cells */
+.tenant-container td:first-child,
+.tenant-container th:first-child {
+  min-width: 100px;
+  width: 20%;
 }
 
-/* Specific styling for vacant rows to override nth-child */
-.tenant-container .vacant-row {
-    background-color: #32ac32 !important; /* Dark green */
-    color: #ffffff !important; /* White text for readability */
-    border-bottom: 1px solid white;
+/* For the edit mode input */
+.tenant-container td:first-child input[type="text"] {
+  min-width: 100px;
 }
 
-.tenant-container tr:nth-child(even) {
-    background-color: #e2e2e2;
+.tenant-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 5;                      /* ensure it sits above table body rows */
+  background-color: var(--bg-color); /* match whatever your header color is */
+  color: var(--text-color);
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 500;
+  border-bottom: 2px solid var(--primary-color);
 }
 
-.tenant-container tr:nth-child(n + 1):hover {
-    cursor: pointer;
-    background-color: #74df74;
-    color: #000000 !important;
+.tenant-container tbody tr {
+  transition: all var(--transition-speed) ease;
 }
 
+.tenant-container tbody tr:nth-child(even) {
+  background-color: #48434925;
+}
 
+.tenant-container tbody tr:hover {
+  background-color: rgba(16, 150, 72, 0.377);
+  transform: translateX(2px);
+  /* color: var(--text-color); */
+}
 
+.vacant-row {
+  background-color: var(--primary-color) !important;
+  color: var(--text-color) !important;
+}
 
-/* Editable Fields */
+.vacant-row:hover {
+  background-color: var(--primary-dark) !important;
+}
+
+/* ==========================================================================
+   Sortable Header (makes cursor pointer visible)
+   ========================================================================== */
+.sortable-header {
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  position: relative;
+}
+
+.sortable-header:hover {
+  color: var(--text-color);
+  background-color: var(--primary-color) !important;
+}
+
+.sortable-header::after {
+  content: "↕";
+  margin-left: 5px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   Editable Fields Inside Table
+   ========================================================================== */
 .tenant-container input[type="text"],
 .tenant-container textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    resize: vertical;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 13px;
+  transition: all var(--transition-speed) ease;
+  background-color: var(--text-color);
+}
+
+.tenant-container input[type="text"]:focus,
+.tenant-container textarea:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(24, 169, 153, 0.2);
+  outline: none;
 }
 
 .tenant-container textarea {
-    min-height: 36px;
-    transform: translateY(1px);
+  min-height: 36px;
+  resize: vertical;
 }
 
-.tenant-em-notes {
-    height: 60px;
-}
-
-/* Buttons for Editable Mode */
+/* ==========================================================================
+   Action Buttons in Table (Edit, Delete, Save, Cancel)
+   ========================================================================== */
+.co-vm-buttons,
 .co-em-buttons {
-    display: flex;
-    gap: 20px;
-    /* justify-content: center; */
+  display: flex;
+  gap: 8px;
 }
 
-/* Buttons for View Mode */
-.co-vm-buttons {
-    display: flex;
-    gap: 20px;
-    /* justify-content: center; */
-}
-
-/* Action Buttons */
-.save-button,
-.cancel-button,
-.edit-button,
-.delete-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+/* "Save" Button Icon */
+.save-button {
+  color: var(--success-color);
+  background-color: rgba(16, 150, 72, 0.1);
 }
 
 .save-button:hover {
-    background-color: #0056b3;
+  color: var(--text-color);
+  background-color: var(--success-color);
 }
 
+/* "Cancel" Button Icon (in edit-mode) */
 .cancel-button {
-    background-color: #dc3545;
+  color: var(--error-color);
+  background-color: rgba(244, 67, 54, 0.1);
 }
 
 .cancel-button:hover {
-    background-color: #c82333;
+  color: var(--text-color);
+  background-color: var(--error-color);
 }
 
+/* "Edit" Button Icon */
 .edit-button {
-    background-color: #ffc107;
+  color: var(--success-color);
+  background-color: rgba(24, 169, 153, 0.1);
 }
 
 .edit-button:hover {
-    background-color: #e0a800;
+  color: var(--text-color);
+  background-color: var(--secondary-color);
 }
 
+/* "Delete" Button Icon */
 .delete-button {
-    background-color: #dc3545;
+  color: var(--error-color);
+  background-color: rgba(244, 67, 54, 0.1);
 }
 
 .delete-button:hover {
-    background-color: #c82333;
+  color: var(--text-color);
+  background-color: var(--error-color);
 }
 
-/* Custom Icon */
-.custom-icon {
-    font-size: 18px;
-    vertical-align: middle;
+/* ==========================================================================
+   Confirmation Modal: Overlay, Content, Table
+   ========================================================================== */
+.tenant-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(72, 67, 73, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.tenant-modal-content {
+  background: var(--text-color);
+  padding: 24px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--secondary-color);
+}
+
+.tenant-modal-content h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--text-dark);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 8px;
+}
+
+.tenant-modal-table-wrapper {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.tenant-modal-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.tenant-modal-table-wrapper th {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  position: sticky;
+  top: 0;
+}
+
+.tenant-modal-table-wrapper th,
+.tenant-modal-table-wrapper td {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  text-align: left;
+  font-size: 13px;
+}
+
+.tenant-modal-table-wrapper tr:nth-child(even) {
+  background-color: #48434925;
+}
+
+/* Inputs/Textareas in Modal */
+.tenant-modal-table-wrapper input[type="text"],
+.tenant-modal-table-wrapper textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--text-color);
+  font-size: 13px;
+  transition: all var(--transition-speed) ease;
+}
+
+.tenant-modal-table-wrapper input[type="text"]:focus,
+.tenant-modal-table-wrapper textarea:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(24, 169, 153, 0.2);
+}
+
+/* Make the "Tenant Name" field slightly larger */
+.tenant-modal-table-wrapper input[name="tenantName"] {
+  min-width: 200px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Modal Action Buttons (Confirm, Cancel) */
+.tenant-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Confirm-icon Button */
+.tenant-confirm-button {
+  font-size: 20px;
+  color: var(--primary-color);
+  background-color: rgba(16, 150, 72, 0.1);
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.tenant-confirm-button:hover {
+  color: var(--text-color);
+  background-color: var(--primary-color);
+}
+
+/* Cancel-icon Button */
+.tenant-cancel-button {
+  font-size: 20px;
+  color: var(--error-color);
+  background-color: rgba(244, 67, 54, 0.1);
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.tenant-cancel-button:hover {
+  color: var(--text-color);
+  background-color: var(--error-color);
+}
+
+
+/* ==========================================================================
+   Loading Spinner
+   ========================================================================== */
+.loading-spinner {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+  margin: 2rem auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 768px) {
+  .tenant-modal-content {
+    max-width: 100%;
+    padding: 16px;
+  }
+  
+  .tenant-modal-table-wrapper table {
+    min-width: auto;
+  }
+  
+  .tenant-building-name {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tenant-modal-content {
+    border-radius: 0;
+    padding: 12px;
+  }
+  
+  .tenant-modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  
+  .create-tenant-container {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .csv-upload-input {
+    width: 100%;
+  }
+  
+  .small-create-button {
+    bottom: 20px;
+    right: 20px;
+    padding: 14px;
+  }
 }

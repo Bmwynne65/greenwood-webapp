@@ -15,6 +15,8 @@ import Tenant from "./components/Pages/tenantPage/Tenant"
 import SignIn from "./components/Pages/sign-in/Signup"
 import UserManagement from "./components/Pages/userManagement/userManagement"
 import StackingPage from "./components/Pages/stacking plan/StackingPlan";
+import BuildingSummaryPage from "./components/Pages/buildingSummary/BuildingSummaryPage";
+import Testing from "./components/Pages/testing/Testing";
 
 import Unauthorized from "./components/Pages/unauthorized/unauthorized"
 import AdminProtectedPage from "./components/Pages/userAccess/AdminProtectedPage"
@@ -60,7 +62,7 @@ function App() {
 
         <AuthProvider>
           <Router>
-            <Routes>
+            <Routes> BuildingSummaryPage
               <Route path="/" element={<Home />} />
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/manager" element={<Manager />} />
@@ -71,6 +73,8 @@ function App() {
               <Route path="/tenant/:id" exact element={<Tenant />} />
               <Route path="/edit/:id" exact element={<Edit />} />
               <Route path="/stackingPage/:id" exact element={<StackingPage />} />
+              <Route path="/buildingSummary/:id" exact element={<BuildingSummaryPage />} />
+              <Route path="/testing" exact element={<Testing />} />
             </Routes>
           </Router>
         </AuthProvider>
