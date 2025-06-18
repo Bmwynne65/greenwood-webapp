@@ -54,8 +54,8 @@ const DisplayBldgInfo = () => {
   const [allBuildings, setAllBuildings] = useState(null);
   const [search,       setSearch]       = useState("");
   const [subMarket,    setSubMarket]    = useState("");
-  const [sortColumn,   setSortColumn]   = useState(null);
-  const [sortOrder,    setSortOrder]    = useState("asc");
+  const [sortColumn,   setSortColumn]   = useState("address");
+  const [sortOrder,    setSortOrder]    = useState("desc");
 
   // Fetch buildings on mount
   useEffect(() => {
@@ -234,7 +234,7 @@ const DisplayBldgInfo = () => {
               <div className="dropdown">
                 <button className="dropbtn">Sub-markets</button>
                 <div className="dropdown-content">
-                  {["", "DTC", "Centennial", "Greenwood Village"].map(m => (
+                  {["", "DTC", "Centennial", "Greenwood Village", "Meridian", "Inverness"].map(m => (
                     <button
                       key={m}
                       className="subMarket-filter-btn"
@@ -301,7 +301,7 @@ const DisplayBldgInfo = () => {
                         "N/A"
                       )}
                     </td>
-                    <td>{b.lsf ? `$${currencyFormatter.format(b.lsf)}` : "UNK"}</td>
+                    <td>{b.lsf ? `$${currencyFormatter.format(b.lsf)}` : "Not Disclosed"}</td>
                     <td>{b.on}</td>
                     {isEmployee && (
                       <td>

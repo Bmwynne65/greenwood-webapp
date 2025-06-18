@@ -26,6 +26,9 @@ const CircularChart = ({ percentage, colorClass = "" }) => {
   );
 };
 
+const formatNumber = (num) =>
+  new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(num);
+
 const BuildingSummary = () => {
   const { id } = useParams();
   const buildingId = id || "670d942b0c952bcc89d74c53";
@@ -68,8 +71,8 @@ const BuildingSummary = () => {
     { key: "previousOwner", label: "Previous Owner" },
     { key: "leaseRate", label: "Lease Rate" },
     { key: "vacancyRate", label: "Vacancy Rate" },
-    { key: "lsf", label: "LSF" },
-    { key: "on", label: "On" },
+    { key: "lsf", label: "LSP" },
+    { key: "on", label: "Date Sold" },
     { key: "rsf", label: "RSF" }
   ];
 
@@ -101,11 +104,44 @@ const BuildingSummary = () => {
         <div className="content-section">
           <div className="building-info">
             {fields.map(({ key, label }) => {
-              const value = building[key];
+              const raw = building[key];
+
+              // Vacancy Rate remains as-is
+              if (key === "vacancyRate" && raw != null) {
+                // …
+              }
+
+              // Format LSF: "$1,234,567"
+              if (key === "lsf") {
+                const v = raw != null ? raw : null;
+                const display = v != null
+                  ? `$${formatNumber(v)}`
+                  : "—";
+                return (
+                  <div className="info-row" key={key}>
+                    <span className="info-key">{label}:</span>
+                    <span className="info-value">{display}</span>
+                  </div>
+                );
+              }
+
+              // Format RSF: "1,234,567"
+              if (key === "rsf") {
+                const v = raw != null ? raw : null;
+                const display = v != null
+                  ? formatNumber(v)
+                  : "—";
+                return (
+                  <div className="info-row" key={key}>
+                    <span className="info-key">{label}:</span>
+                    <span className="info-value">{display}</span>
+                  </div>
+                );
+              }
 
               // Vacancy Rate chart
-              if (key === "vacancyRate" && value != null) {
-                const pct = value <= 1 ? Math.round(value * 100) : Math.round(value);
+              if (key === "vacancyRate" && raw != null) {
+                const pct = raw <= 1 ? Math.round(raw * 100) : Math.round(raw);
                 return (
                   <div className="info-row" key={key}>
                     <span className="info-key">{label}:</span>
@@ -123,10 +159,12 @@ const BuildingSummary = () => {
                 );
               }
 
+              // Fallback for all other fields
+              const display = raw != null ? raw : "—";
               return (
                 <div className="info-row" key={key}>
                   <span className="info-key">{label}:</span>
-                  <span className="info-value">{value != null ? value : "—"}</span>
+                  <span className="info-value">{display}</span>
                 </div>
               );
             })}

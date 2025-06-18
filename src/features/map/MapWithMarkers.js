@@ -119,8 +119,17 @@ const MapWithMarkers = () => {
       case "Greenwood Village":
         iconUrl = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
         break;
-      default:
+      case "Meridian":
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/orange-dot.png";
+        break;
+      case "Centennial":
         iconUrl = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+        break;
+      case "Inverness":
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/purple-dot.png";
+        break;
+      default:
+        iconUrl = "http://maps.google.com/mapfiles/ms/icons/black-dot.png";
     }
     return {
       url: iconUrl,
@@ -178,7 +187,7 @@ const MapWithMarkers = () => {
                         </p>
                         <button
                           className="read-more"
-                          onClick={() => navigate(`/stackingPage/${location._id}`)}
+                          onClick={() => navigate(`/buildingSummary/${location._id}`)}
                         >
                           Read more
                           <span className="sr-only">{location.address}</span>
